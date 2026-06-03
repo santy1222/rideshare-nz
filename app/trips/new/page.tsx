@@ -65,7 +65,7 @@ export default function NewTripPage() {
       .single();
 
     if (insertError) {
-      setError("Error al publicar el viaje. Intentá de nuevo.");
+      setError(`Error: ${insertError.message}`);
       setLoading(false);
       return;
     }
