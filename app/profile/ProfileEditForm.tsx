@@ -29,11 +29,10 @@ export function ProfileEditForm({ profile }: Props) {
 
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ full_name: fullName, phone: phone || null })
-      .eq("id", user.id);
+      .upsert({ id: user.id, full_name: fullName, phone: phone || null, role: "user" });
 
     if (updateError) {
-      setError("Error al guardar los cambios");
+      setError(`Error: ${updateError.message}`);
     } else {
       setSaved(true);
       router.refresh();
