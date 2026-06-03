@@ -49,28 +49,16 @@ export function Navbar() {
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 17H3a1 1 0 01-1-1v-5l2.5-6h13L20 11v5a1 1 0 01-1 1h-2"
-              stroke="#16a34a"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="7.5" cy="17.5" r="1.5" fill="#16a34a" />
-            <circle cx="16.5" cy="17.5" r="1.5" fill="#16a34a" />
-            <path
-              d="M5.5 11h13"
-              stroke="#16a34a"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            />
+          <svg width="44" height="22" viewBox="0 0 60 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16L17 6H40L46 16H12Z" fill="#16a34a"/>
+            <path d="M18 15L21 7H29V15H18Z" fill="#86efac"/>
+            <path d="M30 15V7H39L45 15H30Z" fill="#86efac"/>
+            <path d="M2 16H57V21Q57 23 55 23H5Q3 23 3 21V16Z" fill="#16a34a"/>
+            <rect x="55" y="17" width="3" height="2.5" rx="1.25" fill="#fef9c3"/>
+            <circle cx="15" cy="23" r="5" fill="#14532d"/>
+            <circle cx="15" cy="23" r="2.2" fill="#4ade80"/>
+            <circle cx="44" cy="23" r="5" fill="#14532d"/>
+            <circle cx="44" cy="23" r="2.2" fill="#4ade80"/>
           </svg>
           <span className="font-sora font-bold text-green-700 text-xl group-hover:text-green-800 transition-colors">
             Ride Share NZ
