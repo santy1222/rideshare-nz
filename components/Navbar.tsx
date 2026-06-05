@@ -7,13 +7,14 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { Profile } from "@/types";
-import { Menu, X, Shield, MessageCircle } from "lucide-react";
+import { Menu, X, Shield, MessageCircle, Bell } from "lucide-react";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [notifCount, setNotifCount] = useState(0);
   const router = useRouter();
   const supabase = createClient();
 
@@ -22,7 +23,7 @@ export function Navbar() {
 
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
-      if (user) { userId = user.id; fetchProfile(user.id); fetchUnread(user.id); }
+      if (user) { userId = user.id; fetchProfile(user.id); fetchUnread(user.id); fetchNotifs(user.id); }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -32,16 +33,18 @@ export function Navbar() {
           userId = session.user.id;
           fetchProfile(session.user.id);
           fetchUnread(session.user.id);
+          fetchNotifs(session.user.id);
         } else {
           userId = null;
           setProfile(null);
           setUnreadCount(0);
+          setNotifCount(0);
         }
       }
     );
 
     const interval = setInterval(() => {
-      if (userId) fetchUnread(userId);
+      if (userId) { fetchUnread(userId); fetchNotifs(userId); }
     }, 10000);
 
     return () => { subscription.unsubscribe(); clearInterval(interval); };
@@ -59,6 +62,15 @@ export function Navbar() {
       .eq("receiver_id", id)
       .eq("read", false);
     setUnreadCount(count ?? 0);
+  }
+
+  async function fetchNotifs(id: string) {
+    const { count } = await supabase
+      .from("notifications")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", id)
+      .eq("read", false);
+    setNotifCount(count ?? 0);
   }
 
   async function handleLogout() {
@@ -91,6 +103,14 @@ export function Navbar() {
                 {unreadCount > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-brand-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium leading-none">
                     {unreadCount}
+                  </span>
+                )}
+              </Link>
+              <Link href="/notifications" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+                <Bell size={14} />
+                {notifCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium leading-none">
+                    {notifCount}
                   </span>
                 )}
               </Link>
@@ -150,6 +170,19 @@ export function Navbar() {
                 {unreadCount > 0 && (
                   <span className="bg-brand-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                     {unreadCount}
+                  </span>
+                )}
+              </Link>
+              <Link
+                href="/notifications"
+                onClick={() => setMenuOpen(false)}
+                className="font-medium text-gray-700 py-3 border-b border-gray-50 flex items-center gap-2 min-h-[52px]"
+              >
+                <Bell size={15} />
+                Notificaciones
+                {notifCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                    {notifCount}
                   </span>
                 )}
               </Link>

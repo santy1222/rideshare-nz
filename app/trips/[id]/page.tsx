@@ -29,7 +29,7 @@ export default async function TripDetailPage({ params }: PageProps) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [{ data: reviews }, { data: booking }, { data: existingMessage }, { data: passengers }] =
+  const [{ data: reviews }, { data: booking }, { data: existingMessage }, { data: passengers }, { data: userProfile }] =
     await Promise.all([
       supabase
         .from("reviews")
@@ -60,6 +60,9 @@ export default async function TripDetailPage({ params }: PageProps) {
         .select("*, passenger:profiles!passenger_id(full_name, phone)")
         .eq("trip_id", id)
         .eq("status", "confirmed"),
+      user
+        ? supabase.from("profiles").select("full_name").eq("id", user.id).single()
+        : Promise.resolve({ data: null }),
     ]);
 
   const driver = trip.profiles;
@@ -194,6 +197,9 @@ export default async function TripDetailPage({ params }: PageProps) {
                 <BookingButton
                   tripId={trip.id}
                   userId={user.id}
+                  driverId={trip.driver_id}
+                  passengerName={userProfile?.full_name ?? "Un pasajero"}
+                  tripRoute={`${trip.origin} → ${trip.destination}`}
                   hasBooked={!!booking}
                   isFull={trip.seats_available === 0}
                   seatsAvailable={trip.seats_available}

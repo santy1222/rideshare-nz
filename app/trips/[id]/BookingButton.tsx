@@ -8,12 +8,18 @@ import { Users, CheckCircle } from "lucide-react";
 interface Props {
   tripId: string;
   userId: string;
+  driverId: string;
+  passengerName: string;
+  tripRoute: string;
   hasBooked: boolean;
   isFull: boolean;
   seatsAvailable: number;
 }
 
-export function BookingButton({ tripId, userId, hasBooked: initialBooked, isFull, seatsAvailable }: Props) {
+export function BookingButton({
+  tripId, userId, driverId, passengerName, tripRoute,
+  hasBooked: initialBooked, isFull, seatsAvailable,
+}: Props) {
   const [loading, setLoading] = useState(false);
   const [booked, setBooked] = useState(initialBooked);
   const [error, setError] = useState("");
@@ -23,13 +29,22 @@ export function BookingButton({ tripId, userId, hasBooked: initialBooked, isFull
   async function handleBook() {
     setLoading(true);
     setError("");
-    const { error } = await supabase
+
+    const { error: bookingError } = await supabase
       .from("bookings")
       .insert({ trip_id: tripId, passenger_id: userId });
 
-    if (error) {
+    if (bookingError) {
       setError("No se pudo reservar el lugar. Intentá de nuevo.");
     } else {
+      // Notify the driver
+      await supabase.from("notifications").insert({
+        user_id: driverId,
+        type: "new_booking",
+        message: `${passengerName} se unió a tu viaje ${tripRoute}`,
+        trip_id: tripId,
+      });
+
       setBooked(true);
       router.refresh();
     }
