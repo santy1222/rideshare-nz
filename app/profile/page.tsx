@@ -1,11 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { format } from "date-fns";
-import { Star, MapPin, Calendar, Phone, User } from "lucide-react";
+import { Star, MapPin, Calendar, Phone } from "lucide-react";
 import type { Review, Trip, Booking } from "@/types";
 import { ProfileEditForm } from "./ProfileEditForm";
 import { CancelBookingButton } from "./CancelBookingButton";
 import Link from "next/link";
+import { Avatar } from "@/components/Avatar";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -44,9 +45,7 @@ export default async function ProfilePage() {
       {/* Profile card */}
       <div className="card mb-6">
         <div className="flex items-start gap-5 mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-2xl font-display shrink-0">
-            {profile?.full_name?.charAt(0).toUpperCase() ?? <User size={28} />}
-          </div>
+          <Avatar name={profile?.full_name ?? "?"} avatarUrl={profile?.avatar_url} size="xl" className="rounded-2xl" />
           <div className="flex-1">
             <h2 className="font-display font-semibold text-xl text-gray-900">
               {profile?.full_name}

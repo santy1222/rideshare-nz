@@ -1,14 +1,6 @@
 import Link from "next/link";
 import type { TripWithDriver } from "@/types";
-
-function Avatar({ name }: { name: string }) {
-  const initials = name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
-  return (
-    <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-semibold flex-shrink-0">
-      {initials}
-    </div>
-  );
-}
+import { Avatar } from "@/components/Avatar";
 
 interface Props {
   trip: TripWithDriver;
@@ -58,7 +50,7 @@ export function TripCard({ trip }: Props) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Avatar name={driver.full_name ?? "?"} />
+            <Avatar name={driver.full_name ?? "?"} avatarUrl={driver.avatar_url} size="sm" />
             <div>
               <div className="text-sm font-medium text-gray-800">{driver.full_name}</div>
               {driver.avg_rating > 0 && (

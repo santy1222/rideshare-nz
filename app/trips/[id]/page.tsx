@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type { Review, Booking, Profile } from "@/types";
+import { Avatar } from "@/components/Avatar";
 import { ReviewForm } from "./ReviewForm";
 import { BookingButton } from "./BookingButton";
 import { ContactForm } from "./ContactForm";
@@ -57,7 +58,7 @@ export default async function TripDetailPage({ params }: PageProps) {
         : Promise.resolve({ data: null }),
       supabase
         .from("bookings")
-        .select("*, passenger:profiles!passenger_id(full_name, phone)")
+        .select("*, passenger:profiles!passenger_id(full_name, phone, avatar_url)")
         .eq("trip_id", id)
         .eq("status", "confirmed"),
       user
@@ -139,9 +140,7 @@ export default async function TripDetailPage({ params }: PageProps) {
           <h3 className="font-display font-semibold text-gray-800 mb-4">Conductor</h3>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xl font-display shrink-0">
-                {driver?.full_name?.charAt(0).toUpperCase()}
-              </div>
+              <Avatar name={driver?.full_name ?? "?"} avatarUrl={driver?.avatar_url} size="lg" />
               <div>
                 <p className="font-semibold text-gray-800">{driver?.full_name}</p>
                 {driver?.avg_rating > 0 && (
@@ -231,12 +230,10 @@ export default async function TripDetailPage({ params }: PageProps) {
             </h3>
             {user ? (
               <div className="space-y-2">
-                {(passengers as (Booking & { passenger: Pick<Profile, "full_name" | "phone"> })[]).map((b) => (
+                {(passengers as (Booking & { passenger: Pick<Profile, "full_name" | "phone" | "avatar_url"> })[]).map((b) => (
                   <div key={b.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-semibold">
-                        {b.passenger?.full_name?.charAt(0).toUpperCase()}
-                      </div>
+                      <Avatar name={b.passenger?.full_name ?? "?"} avatarUrl={b.passenger?.avatar_url} size="xs" />
                       <span className="text-sm font-medium text-gray-700">{b.passenger?.full_name}</span>
                     </div>
                     {isOwner && b.passenger?.phone && (
