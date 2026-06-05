@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { format } from "date-fns";
 import { Star, MapPin, Calendar, Phone, User } from "lucide-react";
-import type { Review, Trip } from "@/types";
+import type { Review, Trip, Booking } from "@/types";
 import { ProfileEditForm } from "./ProfileEditForm";
 
 export default async function ProfilePage() {
@@ -11,7 +11,7 @@ export default async function ProfilePage() {
 
   if (!user) redirect("/login?redirect=/profile");
 
-  const [{ data: profile }, { data: trips }, { data: reviews }] =
+  const [{ data: profile }, { data: trips }, { data: bookings }, { data: reviews }] =
     await Promise.all([
       supabase.from("profiles").select("*").eq("id", user.id).single(),
       supabase
@@ -19,6 +19,13 @@ export default async function ProfilePage() {
         .select("*")
         .eq("driver_id", user.id)
         .order("departure_date", { ascending: false })
+        .limit(10),
+      supabase
+        .from("bookings")
+        .select("*, trip:trips(id, origin, destination, departure_date, departure_time, status)")
+        .eq("passenger_id", user.id)
+        .eq("status", "confirmed")
+        .order("created_at", { ascending: false })
         .limit(10),
       supabase
         .from("reviews")
@@ -118,6 +125,47 @@ export default async function ProfilePage() {
           </div>
         ) : (
           <p className="text-gray-400 text-sm">No publicaste viajes todavía.</p>
+        )}
+      </div>
+
+      {/* Joined trips */}
+      <div className="card mb-6">
+        <h3 className="font-display font-semibold text-gray-800 mb-4">Viajes a los que me uní</h3>
+        {bookings && bookings.length > 0 ? (
+          <div className="space-y-3">
+            {(bookings as (Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status"> })[]).map((b) => (
+              <a
+                key={b.id}
+                href={`/trips/${b.trip.id}`}
+                className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100"
+              >
+                <div className="flex items-center gap-1 text-sm font-medium text-gray-700">
+                  <MapPin size={13} className="text-brand-500" />
+                  {b.trip.origin} → {b.trip.destination}
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <Calendar size={13} />
+                    {format(new Date(b.trip.departure_date), "dd/MM/yy")}
+                  </span>
+                  <span className="text-xs text-gray-400">{b.trip.departure_time.slice(0, 5)}</span>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                      b.trip.status === "active"
+                        ? "bg-brand-50 text-brand-700"
+                        : b.trip.status === "cancelled"
+                        ? "bg-red-100 text-red-600"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {b.trip.status === "active" ? "Confirmado" : b.trip.status === "cancelled" ? "Cancelado" : "Completado"}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-400 text-sm">Todavía no te uniste a ningún viaje.</p>
         )}
       </div>
 

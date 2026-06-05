@@ -152,6 +152,78 @@ create trigger on_auth_user_created
   for each row execute function handle_new_user();
 
 -- =============================================
+-- BOOKINGS
+-- =============================================
+create table if not exists public.bookings (
+  id uuid primary key default uuid_generate_v4(),
+  trip_id uuid references public.trips(id) on delete cascade not null,
+  passenger_id uuid references public.profiles(id) on delete cascade not null,
+  status text not null default 'confirmed' check (status in ('confirmed', 'cancelled')),
+  created_at timestamptz not null default now(),
+  unique (trip_id, passenger_id)
+);
+
+alter table public.bookings enable row level security;
+
+create policy "Passengers and drivers can see bookings"
+  on public.bookings for select
+  using (
+    auth.uid() = passenger_id or
+    exists (select 1 from public.trips where id = trip_id and driver_id = auth.uid())
+  );
+
+create policy "Authenticated users can create bookings"
+  on public.bookings for insert
+  with check (auth.uid() = passenger_id);
+
+create policy "Passengers can cancel own bookings"
+  on public.bookings for update
+  using (auth.uid() = passenger_id);
+
+create or replace function handle_booking_change()
+returns trigger as $$
+begin
+  if TG_OP = 'INSERT' then
+    update public.trips set seats_available = seats_available - 1 where id = new.trip_id;
+  elsif TG_OP = 'UPDATE' and new.status = 'cancelled' and old.status = 'confirmed' then
+    update public.trips set seats_available = seats_available + 1 where id = new.trip_id;
+  end if;
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger after_booking_change
+  after insert or update on public.bookings
+  for each row execute function handle_booking_change();
+
+-- =============================================
+-- MESSAGES
+-- =============================================
+create table if not exists public.messages (
+  id uuid primary key default uuid_generate_v4(),
+  trip_id uuid references public.trips(id) on delete cascade not null,
+  sender_id uuid references public.profiles(id) on delete cascade not null,
+  receiver_id uuid references public.profiles(id) on delete cascade not null,
+  content text not null,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table public.messages enable row level security;
+
+create policy "Users can read own messages"
+  on public.messages for select
+  using (auth.uid() = sender_id or auth.uid() = receiver_id);
+
+create policy "Authenticated users can send messages"
+  on public.messages for insert
+  with check (auth.uid() = sender_id);
+
+create policy "Receivers can mark messages as read"
+  on public.messages for update
+  using (auth.uid() = receiver_id);
+
+-- =============================================
 -- INDEXES
 -- =============================================
 create index if not exists idx_trips_departure_date on public.trips(departure_date);
@@ -159,6 +231,11 @@ create index if not exists idx_trips_origin on public.trips(origin);
 create index if not exists idx_trips_destination on public.trips(destination);
 create index if not exists idx_trips_driver_id on public.trips(driver_id);
 create index if not exists idx_reviews_reviewed_id on public.reviews(reviewed_id);
+create index if not exists idx_bookings_trip_id on public.bookings(trip_id);
+create index if not exists idx_bookings_passenger_id on public.bookings(passenger_id);
+create index if not exists idx_messages_sender_id on public.messages(sender_id);
+create index if not exists idx_messages_receiver_id on public.messages(receiver_id);
+create index if not exists idx_messages_trip_id on public.messages(trip_id);
 
 -- =============================================
 -- SAMPLE DATA (optional - remove in production)

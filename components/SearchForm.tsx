@@ -60,8 +60,8 @@ export function SearchForm() {
           className="input-field"
         />
       </div>
-      <div className="flex gap-2 mt-auto">
-        <button type="submit" className="btn-primary flex-1 flex items-center justify-center gap-1.5 text-sm">
+      <div className="flex gap-2 sm:mt-auto">
+        <button type="submit" className="btn-primary flex-1 text-sm">
           🔍 Buscar
         </button>
         {hasFilters && (

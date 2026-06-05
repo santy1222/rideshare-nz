@@ -41,3 +41,25 @@ export interface Review {
 export interface TripWithDriver extends Trip {
   profiles: Profile;
 }
+
+export interface Booking {
+  id: string;
+  trip_id: string;
+  passenger_id: string;
+  status: "confirmed" | "cancelled";
+  created_at: string;
+  passenger?: Profile;
+}
+
+export interface Message {
+  id: string;
+  trip_id: string;
+  sender_id: string;
+  receiver_id: string;
+  content: string;
+  read: boolean;
+  created_at: string;
+  sender?: Profile;
+  receiver?: Profile;
+  trip?: { origin: string; destination: string };
+}

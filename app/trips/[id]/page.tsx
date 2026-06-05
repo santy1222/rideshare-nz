@@ -6,8 +6,10 @@ import {
   Star, Lock, ArrowLeft
 } from "lucide-react";
 import Link from "next/link";
-import type { Review } from "@/types";
+import type { Review, Booking, Profile } from "@/types";
 import { ReviewForm } from "./ReviewForm";
+import { BookingButton } from "./BookingButton";
+import { ContactForm } from "./ContactForm";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -27,12 +29,38 @@ export default async function TripDetailPage({ params }: PageProps) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: reviews } = await supabase
-    .from("reviews")
-    .select("*, reviewer:profiles!reviewer_id(*)")
-    .eq("reviewed_id", trip.driver_id)
-    .order("created_at", { ascending: false })
-    .limit(5);
+  const [{ data: reviews }, { data: booking }, { data: existingMessage }, { data: passengers }] =
+    await Promise.all([
+      supabase
+        .from("reviews")
+        .select("*, reviewer:profiles!reviewer_id(*)")
+        .eq("reviewed_id", trip.driver_id)
+        .order("created_at", { ascending: false })
+        .limit(5),
+      user
+        ? supabase
+            .from("bookings")
+            .select("id")
+            .eq("trip_id", id)
+            .eq("passenger_id", user.id)
+            .eq("status", "confirmed")
+            .maybeSingle()
+        : Promise.resolve({ data: null }),
+      user
+        ? supabase
+            .from("messages")
+            .select("id")
+            .eq("trip_id", id)
+            .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+            .limit(1)
+            .maybeSingle()
+        : Promise.resolve({ data: null }),
+      supabase
+        .from("bookings")
+        .select("*, passenger:profiles!passenger_id(full_name, phone)")
+        .eq("trip_id", id)
+        .eq("status", "confirmed"),
+    ]);
 
   const driver = trip.profiles;
   const isOwner = user?.id === trip.driver_id;
@@ -48,41 +76,42 @@ export default async function TripDetailPage({ params }: PageProps) {
       </Link>
 
       <div className="card mb-6">
-        <div className="flex items-start justify-between gap-4 mb-6">
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="flex items-center gap-2 bg-brand-50 px-4 py-2 rounded-xl">
-                <MapPin size={16} className="text-brand-500" />
-                <span className="font-display font-semibold text-brand-900 text-lg">
+        {/* Route + price */}
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <div className="flex items-center gap-2 bg-brand-50 px-3 py-2 rounded-xl min-w-0">
+                <MapPin size={15} className="text-brand-500 shrink-0" />
+                <span className="font-display font-semibold text-brand-900 text-base sm:text-lg truncate">
                   {trip.origin}
                 </span>
               </div>
-              <span className="text-2xl text-gray-400">→</span>
-              <div className="flex items-center gap-2 bg-brand-50 px-4 py-2 rounded-xl">
-                <MapPin size={16} className="text-brand-500" />
-                <span className="font-display font-semibold text-brand-900 text-lg">
+              <span className="text-xl text-gray-400">→</span>
+              <div className="flex items-center gap-2 bg-brand-50 px-3 py-2 rounded-xl min-w-0">
+                <MapPin size={15} className="text-brand-500 shrink-0" />
+                <span className="font-display font-semibold text-brand-900 text-base sm:text-lg truncate">
                   {trip.destination}
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+            <div className="flex flex-wrap gap-3 text-sm text-gray-600">
               <span className="flex items-center gap-1.5">
-                <Calendar size={15} className="text-gray-400" />
+                <Calendar size={14} className="text-gray-400" />
                 {format(new Date(trip.departure_date), "EEEE, dd 'de' MMMM yyyy")}
               </span>
               <span className="flex items-center gap-1.5">
-                <Clock size={15} className="text-gray-400" />
+                <Clock size={14} className="text-gray-400" />
                 {trip.departure_time.slice(0, 5)}
               </span>
               <span className="flex items-center gap-1.5">
-                <Users size={15} className="text-gray-400" />
+                <Users size={14} className="text-gray-400" />
                 {trip.seats_available} asiento{trip.seats_available !== 1 ? "s" : ""} disponible{trip.seats_available !== 1 ? "s" : ""}
               </span>
             </div>
           </div>
 
-          <div className="text-right shrink-0">
+          <div className="sm:text-right shrink-0 flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
             {trip.price != null ? (
               <div className="text-brand-500 font-bold font-display text-3xl flex items-start gap-0.5">
                 <DollarSign size={20} className="mt-1" />
@@ -95,6 +124,7 @@ export default async function TripDetailPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* Description */}
         {trip.description && (
           <div className="bg-gray-50 rounded-xl p-4 mb-6">
             <p className="text-gray-600 text-sm leading-relaxed">{trip.description}</p>
@@ -104,9 +134,9 @@ export default async function TripDetailPage({ params }: PageProps) {
         {/* Driver info */}
         <div className="border-t border-gray-100 pt-5">
           <h3 className="font-display font-semibold text-gray-800 mb-4">Conductor</h3>
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xl font-display">
+              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xl font-display shrink-0">
                 {driver?.full_name?.charAt(0).toUpperCase()}
               </div>
               <div>
@@ -132,33 +162,96 @@ export default async function TripDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Phone - only for logged in users */}
-            <div>
-              {user ? (
-                driver?.phone ? (
-                  <a
-                    href={`tel:${driver.phone}`}
-                    className="flex items-center gap-2 bg-brand-500 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors"
-                  >
-                    <Phone size={15} />
-                    {driver.phone}
-                  </a>
-                ) : (
-                  <span className="text-gray-400 text-sm italic">Sin teléfono registrado</span>
-                )
-              ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors"
+            {user ? (
+              driver?.phone ? (
+                <a
+                  href={`tel:${driver.phone}`}
+                  className="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors min-h-[44px]"
                 >
-                  <Lock size={14} />
-                  Iniciá sesión para ver el teléfono
-                </Link>
-              )}
-            </div>
+                  <Phone size={15} />
+                  {driver.phone}
+                </a>
+              ) : (
+                <span className="text-gray-400 text-sm italic">Sin teléfono registrado</span>
+              )
+            ) : (
+              <Link
+                href={`/login?redirect=/trips/${trip.id}`}
+                className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors min-h-[44px]"
+              >
+                <Lock size={14} />
+                Iniciá sesión para ver el teléfono
+              </Link>
+            )}
           </div>
         </div>
 
+        {/* Booking + contact (for passengers) */}
+        {!isOwner && (
+          <div className="border-t border-gray-100 pt-5 mt-5 space-y-3">
+            {user ? (
+              <>
+                <BookingButton
+                  tripId={trip.id}
+                  userId={user.id}
+                  hasBooked={!!booking}
+                  isFull={trip.seats_available === 0}
+                  seatsAvailable={trip.seats_available}
+                />
+                <ContactForm
+                  tripId={trip.id}
+                  userId={user.id}
+                  receiverId={trip.driver_id}
+                  receiverName={driver?.full_name ?? "Conductor"}
+                  hasConversation={!!existingMessage}
+                />
+              </>
+            ) : (
+              <Link
+                href={`/login?redirect=/trips/${trip.id}`}
+                className="w-full py-3 bg-brand-500 hover:bg-brand-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
+              >
+                Iniciá sesión para unirte al viaje
+              </Link>
+            )}
+          </div>
+        )}
+
+        {/* Passengers list */}
+        {passengers && passengers.length > 0 && (
+          <div className="border-t border-gray-100 pt-5 mt-5">
+            <h3 className="font-display font-semibold text-gray-800 mb-3">
+              Pasajeros confirmados ({passengers.length})
+            </h3>
+            {user ? (
+              <div className="space-y-2">
+                {(passengers as (Booking & { passenger: Pick<Profile, "full_name" | "phone"> })[]).map((b) => (
+                  <div key={b.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-semibold">
+                        {b.passenger?.full_name?.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{b.passenger?.full_name}</span>
+                    </div>
+                    {isOwner && b.passenger?.phone && (
+                      <a href={`tel:${b.passenger.phone}`} className="text-xs text-brand-500 hover:underline flex items-center gap-1">
+                        <Phone size={12} />
+                        {b.passenger.phone}
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl text-sm text-gray-500">
+                <Users size={15} className="text-brand-500" />
+                {passengers.length} persona{passengers.length !== 1 ? "s" : ""} ya se unió{passengers.length !== 1 ? "ron" : ""} a este viaje
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Cancel trip (for driver) */}
         {isOwner && (
           <div className="border-t border-gray-100 pt-4 mt-4">
             <CancelTripButton tripId={trip.id} />
@@ -212,7 +305,7 @@ export default async function TripDetailPage({ params }: PageProps) {
         )}
 
         {!user && (
-          <Link href="/login" className="text-brand-500 text-sm hover:underline">
+          <Link href={`/login?redirect=/trips/${trip.id}`} className="text-brand-500 text-sm hover:underline">
             Iniciá sesión para dejar una reseña
           </Link>
         )}

@@ -32,14 +32,13 @@ export default async function HomePage({ searchParams }: PageProps) {
     <div className="min-h-screen bg-gray-50">
 
       {/* Hero */}
-      <div className="bg-gradient-to-br from-brand-50 to-brand-100 px-4 py-10 text-center">
+      <div className="bg-gradient-to-br from-brand-50 to-brand-100 px-4 py-8 sm:py-12 text-center">
         <div className="inline-flex items-center gap-1.5 text-xs text-brand-700 bg-white border border-brand-100 rounded-full px-3 py-1 mb-4">
-          🌿 Viajá juntos, compartí gastos
+          🌿 Ahorrá dinero, cuidá el planeta
         </div>
-        <h1 className="font-display font-semibold text-3xl text-brand-900 mb-2 leading-tight">
-          Tu próximo viaje,<br />a mitad de precio
+        <h1 className="font-display font-semibold text-2xl sm:text-3xl text-brand-900 mb-5 sm:mb-6 leading-tight px-2">
+          Viajes compartidos por toda Nueva Zelanda
         </h1>
-        <p className="text-brand-700 text-sm mb-6">Viajes compartidos por toda Nueva Zelanda</p>
 
         <Suspense>
           <SearchForm />

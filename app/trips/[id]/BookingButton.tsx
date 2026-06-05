@@ -1,0 +1,75 @@
+"use client";
+
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { Users, CheckCircle } from "lucide-react";
+
+interface Props {
+  tripId: string;
+  userId: string;
+  hasBooked: boolean;
+  isFull: boolean;
+  seatsAvailable: number;
+}
+
+export function BookingButton({ tripId, userId, hasBooked: initialBooked, isFull, seatsAvailable }: Props) {
+  const [loading, setLoading] = useState(false);
+  const [booked, setBooked] = useState(initialBooked);
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const supabase = createClient();
+
+  async function handleBook() {
+    setLoading(true);
+    setError("");
+    const { error } = await supabase
+      .from("bookings")
+      .insert({ trip_id: tripId, passenger_id: userId });
+
+    if (error) {
+      setError("No se pudo reservar el lugar. Intentá de nuevo.");
+    } else {
+      setBooked(true);
+      router.refresh();
+    }
+    setLoading(false);
+  }
+
+  if (booked) {
+    return (
+      <div className="bg-brand-50 border border-brand-100 rounded-xl p-4 flex items-center gap-3">
+        <CheckCircle size={20} className="text-brand-500 flex-shrink-0" />
+        <div>
+          <p className="text-brand-700 font-semibold text-sm">Ya te uniste a este viaje</p>
+          <p className="text-xs text-brand-600 mt-0.5">El conductor puede ver tu información de contacto</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isFull) {
+    return (
+      <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+        <p className="text-gray-500 text-sm font-medium">Este viaje está completo</p>
+        <p className="text-xs text-gray-400 mt-0.5">No quedan asientos disponibles</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-1.5">
+      {error && <p className="text-xs text-red-500">{error}</p>}
+      <button
+        onClick={handleBook}
+        disabled={loading}
+        className="w-full py-3 bg-brand-500 hover:bg-brand-700 disabled:bg-brand-200 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+      >
+        <Users size={16} />
+        {loading
+          ? "Procesando..."
+          : `Unirse al viaje · ${seatsAvailable} lugar${seatsAvailable !== 1 ? "es" : ""} disponible${seatsAvailable !== 1 ? "s" : ""}`}
+      </button>
+    </div>
+  );
+}

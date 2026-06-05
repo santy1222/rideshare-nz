@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Mail } from "lucide-react";
+import Image from "next/image";
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState("");
@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [registered, setRegistered] = useState(false);
   const supabase = createClient();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -47,15 +47,42 @@ export default function RegisterPage() {
       });
     }
 
-    router.push("/");
-    router.refresh();
+    setRegistered(true);
+  }
+
+  if (registered) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
+        <div className="bg-white border border-gray-100 rounded-2xl p-8 w-full max-w-sm text-center">
+          <div className="w-16 h-16 rounded-full bg-brand-50 flex items-center justify-center mx-auto mb-5">
+            <Mail size={28} className="text-brand-500" />
+          </div>
+          <h1 className="font-display font-semibold text-xl text-gray-900 mb-2">
+            Revisá tu correo
+          </h1>
+          <p className="text-sm text-gray-500 mb-1">
+            Te enviamos un enlace de confirmación a
+          </p>
+          <p className="text-sm font-medium text-brand-700 mb-6">{email}</p>
+          <p className="text-xs text-gray-400 mb-6">
+            Hacé clic en el enlace del email para activar tu cuenta. Si no lo ves, revisá la carpeta de spam.
+          </p>
+          <Link
+            href="/login"
+            className="block w-full py-2.5 bg-brand-500 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors text-center"
+          >
+            Ir a iniciar sesión
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
       <div className="bg-white border border-gray-100 rounded-2xl p-8 w-full max-w-sm">
-        <Link href="/" className="flex items-center gap-2 justify-center font-display font-semibold text-xl text-brand-500 mb-6">
-          🚗 RideShare<span className="text-brand-700">.nz</span>
+        <Link href="/" className="flex justify-center mb-6">
+          <Image src="/logo.svg" alt="RideShare NZ" height={40} width={160} className="object-contain" />
         </Link>
         <h1 className="font-display font-semibold text-xl text-gray-900 text-center mb-1">Creá tu cuenta</h1>
         <p className="text-sm text-gray-400 text-center mb-6">Gratis y en menos de 2 minutos</p>

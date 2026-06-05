@@ -54,7 +54,7 @@ export function ReviewForm({ tripId, reviewedId, userId }: Props) {
 
   if (done) {
     return (
-      <div className="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm font-medium">
+      <div className="bg-brand-50 text-brand-700 px-4 py-3 rounded-xl text-sm font-medium">
         ¡Gracias por tu reseña!
       </div>
     );

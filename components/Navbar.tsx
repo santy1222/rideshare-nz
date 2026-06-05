@@ -1,38 +1,64 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { Profile } from "@/types";
-import { Menu, X, Shield } from "lucide-react";
+import { Menu, X, Shield, MessageCircle } from "lucide-react";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
+    let userId: string | null = null;
+
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
-      if (user) fetchProfile(user.id);
+      if (user) { userId = user.id; fetchProfile(user.id); fetchUnread(user.id); }
     });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
-        if (session?.user) fetchProfile(session.user.id);
-        else setProfile(null);
+        if (session?.user) {
+          userId = session.user.id;
+          fetchProfile(session.user.id);
+          fetchUnread(session.user.id);
+        } else {
+          userId = null;
+          setProfile(null);
+          setUnreadCount(0);
+        }
       }
     );
-    return () => subscription.unsubscribe();
+
+    const interval = setInterval(() => {
+      if (userId) fetchUnread(userId);
+    }, 10000);
+
+    return () => { subscription.unsubscribe(); clearInterval(interval); };
   }, []);
 
   async function fetchProfile(id: string) {
     const { data } = await supabase.from("profiles").select("*").eq("id", id).single();
     setProfile(data);
+  }
+
+  async function fetchUnread(id: string) {
+    const { count } = await supabase
+      .from("messages")
+      .select("id", { count: "exact", head: true })
+      .eq("receiver_id", id)
+      .eq("read", false);
+    setUnreadCount(count ?? 0);
   }
 
   async function handleLogout() {
@@ -44,13 +70,8 @@ export function Navbar() {
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-display font-semibold text-xl text-brand-500">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/>
-            <circle cx="13" cy="17" r="2"/><circle cx="19" cy="17" r="2"/>
-            <path d="M9 11l4-4 4 4M13 7v10M19 15v-3a2 2 0 0 0-2-2h-1"/>
-          </svg>
-          RideShare<span className="text-brand-700">.nz</span>
+        <Link href="/">
+          <Image src="/logo.svg" alt="RideShare NZ" height={36} width={160} className="object-contain" priority />
         </Link>
 
         {/* Desktop */}
@@ -63,6 +84,15 @@ export function Navbar() {
             <>
               <Link href="/trips/new" className="text-sm px-4 py-1.5 bg-brand-500 text-white rounded-lg font-medium hover:bg-brand-700 transition-colors">
                 + Publicar viaje
+              </Link>
+              <Link href="/messages" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+                <MessageCircle size={14} />
+                Mensajes
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-brand-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium leading-none">
+                    {unreadCount}
+                  </span>
+                )}
               </Link>
               <Link href="/profile" className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                 {profile?.full_name?.split(" ")[0] ?? "Mi perfil"}
@@ -90,37 +120,76 @@ export function Navbar() {
         </div>
 
         {/* Mobile toggle */}
-        <button className="md:hidden p-2 text-gray-500" onClick={() => setMenuOpen(!menuOpen)}>
+        <button
+          className="md:hidden p-2 text-gray-500 min-w-[44px] min-h-[44px] flex items-center justify-center"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 flex flex-col gap-3">
+        <div className="md:hidden bg-white border-t border-gray-100 px-4 py-2 flex flex-col">
           {user ? (
             <>
-              <Link href="/trips/new" onClick={() => setMenuOpen(false)} className="font-medium text-brand-500">
+              <Link
+                href="/trips/new"
+                onClick={() => setMenuOpen(false)}
+                className="font-medium text-brand-500 py-3 border-b border-gray-50 flex items-center min-h-[52px]"
+              >
                 + Publicar viaje
               </Link>
-              <Link href="/profile" onClick={() => setMenuOpen(false)} className="font-medium text-gray-700">
+              <Link
+                href="/messages"
+                onClick={() => setMenuOpen(false)}
+                className="font-medium text-gray-700 py-3 border-b border-gray-50 flex items-center gap-2 min-h-[52px]"
+              >
+                <MessageCircle size={15} />
+                Mensajes
+                {unreadCount > 0 && (
+                  <span className="bg-brand-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
+              <Link
+                href="/profile"
+                onClick={() => setMenuOpen(false)}
+                className="font-medium text-gray-700 py-3 border-b border-gray-50 flex items-center min-h-[52px]"
+              >
                 Mi perfil
               </Link>
               {profile?.role === "admin" && (
-                <Link href="/admin" onClick={() => setMenuOpen(false)} className="font-medium text-purple-600">
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="font-medium text-purple-600 py-3 border-b border-gray-50 flex items-center min-h-[52px]"
+                >
                   Admin
                 </Link>
               )}
-              <button onClick={handleLogout} className="text-left font-medium text-red-500">
+              <button
+                onClick={handleLogout}
+                className="text-left font-medium text-red-500 py-3 flex items-center min-h-[52px]"
+              >
                 Cerrar sesión
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" onClick={() => setMenuOpen(false)} className="font-medium text-gray-700">
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                className="font-medium text-gray-700 py-3 border-b border-gray-50 flex items-center min-h-[52px]"
+              >
                 Iniciar sesión
               </Link>
-              <Link href="/register" onClick={() => setMenuOpen(false)} className="font-medium text-brand-500">
+              <Link
+                href="/register"
+                onClick={() => setMenuOpen(false)}
+                className="font-medium text-brand-500 py-3 flex items-center min-h-[52px]"
+              >
                 Registrarse
               </Link>
             </>
