@@ -108,6 +108,7 @@ export function Navbar() {
               </Link>
               <Link href="/notifications" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1.5">
                 <Bell size={14} />
+                Notificaciones
                 {notifCount > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium leading-none">
                     {notifCount}

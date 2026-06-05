@@ -24,7 +24,7 @@ export default async function ProfilePage() {
         .limit(10),
       supabase
         .from("bookings")
-        .select("*, trip:trips(id, origin, destination, departure_date, departure_time, status)")
+        .select("*, trip:trips(id, origin, destination, departure_date, departure_time, status, driver_id)")
         .eq("passenger_id", user.id)
         .eq("status", "confirmed")
         .order("created_at", { ascending: false })
@@ -135,7 +135,7 @@ export default async function ProfilePage() {
         <h3 className="font-display font-semibold text-gray-800 mb-4">Viajes a los que me uní</h3>
         {bookings && bookings.length > 0 ? (
           <div className="space-y-3">
-            {(bookings as (Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status"> })[]).map((b) => (
+            {(bookings as (Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status" | "driver_id"> })[]).map((b) => (
               <div
                 key={b.id}
                 className="flex items-center justify-between p-3 rounded-xl border border-gray-100 gap-2"
@@ -168,7 +168,12 @@ export default async function ProfilePage() {
                   </div>
                 </Link>
                 {b.trip.status === "active" && (
-                  <CancelBookingButton bookingId={b.id} />
+                  <CancelBookingButton
+                    bookingId={b.id}
+                    driverId={b.trip.driver_id}
+                    tripRoute={`${b.trip.origin} → ${b.trip.destination}`}
+                    passengerName={profile?.full_name ?? "Un pasajero"}
+                  />
                 )}
               </div>
             ))}
