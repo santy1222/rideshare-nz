@@ -38,10 +38,10 @@ export function ProfileEditForm({ profile }: Props) {
 
     const { error: uploadError } = await supabase.storage
       .from("avatars")
-      .upload(path, file, { upsert: true });
+      .upload(path, file, { upsert: true, contentType: file.type });
 
     if (uploadError) {
-      setError("No se pudo subir la imagen. Intentá de nuevo.");
+      setError(`Error al subir: ${uploadError.message}`);
       setUploading(false);
       return;
     }
