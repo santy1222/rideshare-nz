@@ -30,16 +30,16 @@ export default async function ProfilePage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="font-sora font-bold text-3xl text-gray-900 mb-8">Mi perfil</h1>
+      <h1 className="font-display font-semibold text-3xl text-gray-900 mb-8">Mi perfil</h1>
 
       {/* Profile card */}
       <div className="card mb-6">
         <div className="flex items-start gap-5 mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-green-100 flex items-center justify-center text-green-700 font-bold text-2xl font-sora shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-2xl font-display shrink-0">
             {profile?.full_name?.charAt(0).toUpperCase() ?? <User size={28} />}
           </div>
           <div className="flex-1">
-            <h2 className="font-sora font-bold text-xl text-gray-900">
+            <h2 className="font-display font-semibold text-xl text-gray-900">
               {profile?.full_name}
             </h2>
             <p className="text-gray-500 text-sm">{user.email}</p>
@@ -77,7 +77,7 @@ export default async function ProfilePage() {
 
       {/* My trips */}
       <div className="card mb-6">
-        <h3 className="font-sora font-semibold text-gray-800 mb-4">Mis viajes publicados</h3>
+        <h3 className="font-display font-semibold text-gray-800 mb-4">Mis viajes publicados</h3>
         {trips && trips.length > 0 ? (
           <div className="space-y-3">
             {(trips as Trip[]).map((trip) => (
@@ -88,7 +88,7 @@ export default async function ProfilePage() {
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 text-sm font-medium text-gray-700">
-                    <MapPin size={13} className="text-green-600" />
+                    <MapPin size={13} className="text-brand-500" />
                     {trip.origin} → {trip.destination}
                   </div>
                 </div>
@@ -123,13 +123,13 @@ export default async function ProfilePage() {
 
       {/* Reviews received */}
       <div className="card">
-        <h3 className="font-sora font-semibold text-gray-800 mb-4">Reseñas recibidas</h3>
+        <h3 className="font-display font-semibold text-gray-800 mb-4">Reseñas recibidas</h3>
         {reviews && reviews.length > 0 ? (
           <div className="space-y-4">
             {(reviews as (Review & { reviewer: { full_name: string } })[]).map((r) => (
               <div key={r.id} className="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xs">
+                  <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs">
                     {r.reviewer?.full_name?.charAt(0)}
                   </div>
                   <span className="font-medium text-sm text-gray-700">

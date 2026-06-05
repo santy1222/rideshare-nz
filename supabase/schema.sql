@@ -7,6 +7,19 @@
 create extension if not exists "uuid-ossp";
 
 -- =============================================
+-- HELPERS
+-- =============================================
+
+-- Bypasses RLS to check admin role, avoiding infinite recursion in policies
+create or replace function public.is_admin()
+returns boolean as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$ language sql security definer stable;
+
+-- =============================================
 -- PROFILES
 -- =============================================
 create table if not exists public.profiles (
@@ -35,12 +48,7 @@ create policy "Users can insert own profile"
 -- Admins can do anything on profiles
 create policy "Admins can manage profiles"
   on public.profiles for all
-  using (
-    exists (
-      select 1 from public.profiles p
-      where p.id = auth.uid() and p.role = 'admin'
-    )
-  );
+  using (public.is_admin());
 
 -- =============================================
 -- TRIPS
@@ -72,12 +80,7 @@ create policy "Drivers can update own trips"
 
 create policy "Admins can manage trips"
   on public.trips for all
-  using (
-    exists (
-      select 1 from public.profiles p
-      where p.id = auth.uid() and p.role = 'admin'
-    )
-  );
+  using (public.is_admin());
 
 -- =============================================
 -- REVIEWS

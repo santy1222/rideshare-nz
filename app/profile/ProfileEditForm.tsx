@@ -47,7 +47,7 @@ export function ProfileEditForm({ profile }: Props) {
         <div className="bg-red-50 text-red-600 text-xs px-3 py-2 rounded-lg">{error}</div>
       )}
       {saved && (
-        <div className="bg-green-50 text-green-700 text-xs px-3 py-2 rounded-lg">
+        <div className="bg-brand-50 text-brand-700 text-xs px-3 py-2 rounded-lg">
           ¡Cambios guardados!
         </div>
       )}

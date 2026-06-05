@@ -41,7 +41,7 @@ export default async function TripDetailPage({ params }: PageProps) {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <Link
         href="/"
-        className="flex items-center gap-2 text-gray-500 hover:text-green-700 mb-6 font-medium transition-colors"
+        className="flex items-center gap-2 text-gray-500 hover:text-brand-700 mb-6 font-medium transition-colors"
       >
         <ArrowLeft size={18} />
         Volver a viajes
@@ -51,16 +51,16 @@ export default async function TripDetailPage({ params }: PageProps) {
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-xl">
-                <MapPin size={16} className="text-green-600" />
-                <span className="font-sora font-semibold text-green-800 text-lg">
+              <div className="flex items-center gap-2 bg-brand-50 px-4 py-2 rounded-xl">
+                <MapPin size={16} className="text-brand-500" />
+                <span className="font-display font-semibold text-brand-900 text-lg">
                   {trip.origin}
                 </span>
               </div>
               <span className="text-2xl text-gray-400">→</span>
-              <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-xl">
-                <MapPin size={16} className="text-green-600" />
-                <span className="font-sora font-semibold text-green-800 text-lg">
+              <div className="flex items-center gap-2 bg-brand-50 px-4 py-2 rounded-xl">
+                <MapPin size={16} className="text-brand-500" />
+                <span className="font-display font-semibold text-brand-900 text-lg">
                   {trip.destination}
                 </span>
               </div>
@@ -84,7 +84,7 @@ export default async function TripDetailPage({ params }: PageProps) {
 
           <div className="text-right shrink-0">
             {trip.price != null ? (
-              <div className="text-green-700 font-bold font-sora text-3xl flex items-start gap-0.5">
+              <div className="text-brand-500 font-bold font-display text-3xl flex items-start gap-0.5">
                 <DollarSign size={20} className="mt-1" />
                 {trip.price}
               </div>
@@ -103,10 +103,10 @@ export default async function TripDetailPage({ params }: PageProps) {
 
         {/* Driver info */}
         <div className="border-t border-gray-100 pt-5">
-          <h3 className="font-sora font-semibold text-gray-800 mb-4">Conductor</h3>
+          <h3 className="font-display font-semibold text-gray-800 mb-4">Conductor</h3>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xl font-sora">
+              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xl font-display">
                 {driver?.full_name?.charAt(0).toUpperCase()}
               </div>
               <div>
@@ -138,7 +138,7 @@ export default async function TripDetailPage({ params }: PageProps) {
                 driver?.phone ? (
                   <a
                     href={`tel:${driver.phone}`}
-                    className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors"
+                    className="flex items-center gap-2 bg-brand-500 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors"
                   >
                     <Phone size={15} />
                     {driver.phone}
@@ -168,7 +168,7 @@ export default async function TripDetailPage({ params }: PageProps) {
 
       {/* Reviews section */}
       <div className="card">
-        <h3 className="font-sora font-semibold text-gray-800 mb-5">
+        <h3 className="font-display font-semibold text-gray-800 mb-5">
           Reseñas del conductor
         </h3>
 
@@ -177,7 +177,7 @@ export default async function TripDetailPage({ params }: PageProps) {
             {(reviews as (Review & { reviewer: { full_name: string } })[]).map((review) => (
               <div key={review.id} className="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xs">
+                  <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs">
                     {review.reviewer?.full_name?.charAt(0)}
                   </div>
                   <span className="font-medium text-sm text-gray-700">
@@ -212,7 +212,7 @@ export default async function TripDetailPage({ params }: PageProps) {
         )}
 
         {!user && (
-          <Link href="/login" className="text-green-600 text-sm hover:underline">
+          <Link href="/login" className="text-brand-500 text-sm hover:underline">
             Iniciá sesión para dejar una reseña
           </Link>
         )}

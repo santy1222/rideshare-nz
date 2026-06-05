@@ -39,7 +39,7 @@ export default async function AdminPage() {
           <Shield size={24} className="text-purple-600" />
         </div>
         <div>
-          <h1 className="font-sora font-bold text-2xl text-gray-900">Panel de administración</h1>
+          <h1 className="font-display font-semibold text-2xl text-gray-900">Panel de administración</h1>
           <p className="text-gray-500 text-sm">Gestión de usuarios y viajes</p>
         </div>
       </div>
@@ -53,7 +53,7 @@ export default async function AdminPage() {
           { label: "Viajes publicados", value: trips?.length ?? 0, icon: Car, color: "purple" },
         ].map((stat) => (
           <div key={stat.label} className="card text-center">
-            <p className="text-3xl font-sora font-bold text-gray-900">{stat.value}</p>
+            <p className="text-3xl font-display font-semibold text-gray-900">{stat.value}</p>
             <p className="text-xs text-gray-500 mt-1">{stat.label}</p>
           </div>
         ))}
@@ -61,7 +61,7 @@ export default async function AdminPage() {
 
       {/* Users table */}
       <div className="card mb-8">
-        <h2 className="font-sora font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
+        <h2 className="font-display font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
           <Users size={18} />
           Usuarios
         </h2>
@@ -83,7 +83,7 @@ export default async function AdminPage() {
                 <tr key={profile.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xs">
+                      <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs">
                         {profile.full_name?.charAt(0)}
                       </div>
                       <span className="font-medium text-gray-800">{profile.full_name}</span>
@@ -131,7 +131,7 @@ export default async function AdminPage() {
 
       {/* Trips table */}
       <div className="card">
-        <h2 className="font-sora font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
+        <h2 className="font-display font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
           <Car size={18} />
           Viajes recientes
         </h2>

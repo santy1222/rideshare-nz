@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Eye, EyeOff, Car } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Suspense } from "react";
 
 function LoginForm() {
@@ -34,71 +34,59 @@ function LoginForm() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-green-100 p-4 rounded-2xl">
-              <Car size={36} className="text-green-600" />
+      <div className="bg-white border border-gray-100 rounded-2xl p-8 w-full max-w-sm">
+        <Link href="/" className="flex items-center gap-2 justify-center font-display font-semibold text-xl text-brand-500 mb-6">
+          🚗 RideShare<span className="text-brand-700">.nz</span>
+        </Link>
+        <h1 className="font-display font-semibold text-xl text-gray-900 text-center mb-1">Bienvenido de vuelta</h1>
+        <p className="text-sm text-gray-400 text-center mb-6">Iniciá sesión para continuar</p>
+
+        <form onSubmit={handleSubmit} className="space-y-3">
+          {error && (
+            <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl border border-red-100">
+              {error}
+            </div>
+          )}
+          <div>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Email</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="tu@email.com"
+              className="input-field"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-gray-500 block mb-1">Contraseña</label>
+            <div className="relative">
+              <input
+                type={showPass ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="input-field pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPass(!showPass)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
-          <h1 className="font-sora font-bold text-2xl text-gray-900">Bienvenido de nuevo</h1>
-          <p className="text-gray-500 mt-1">Iniciá sesión en tu cuenta</p>
-        </div>
+          <button type="submit" disabled={loading} className="w-full py-2.5 bg-brand-500 hover:bg-brand-700 disabled:bg-brand-200 text-white text-sm font-medium rounded-lg transition-colors">
+            {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+          </button>
+        </form>
 
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl border border-red-100">
-                {error}
-              </div>
-            )}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="tu@email.com"
-                className="input-field"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Contraseña
-              </label>
-              <div className="relative">
-                <input
-                  type={showPass ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="input-field pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
-              {loading ? "Iniciando sesión..." : "Iniciar sesión"}
-            </button>
-          </form>
-
-          <p className="text-center text-sm text-gray-500 mt-5">
-            ¿No tenés cuenta?{" "}
-            <Link href="/register" className="text-green-600 font-semibold hover:underline">
-              Registrate gratis
-            </Link>
-          </p>
-        </div>
+        <p className="text-xs text-gray-400 text-center mt-4">
+          ¿No tenés cuenta?{" "}
+          <Link href="/register" className="text-brand-500 hover:underline">Registrate acá</Link>
+        </p>
       </div>
     </div>
   );

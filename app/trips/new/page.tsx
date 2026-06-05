@@ -76,7 +76,7 @@ export default function NewTripPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <div className="mb-8">
-        <h1 className="font-sora font-bold text-3xl text-gray-900">Publicar viaje</h1>
+        <h1 className="font-display font-semibold text-3xl text-gray-900">Publicar viaje</h1>
         <p className="text-gray-500 mt-1">Completá los datos de tu viaje</p>
       </div>
 
@@ -108,7 +108,7 @@ export default function NewTripPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5 flex items-center gap-1.5">
-                <MapPin size={14} className="text-green-500" />
+                <MapPin size={14} className="text-brand-500" />
                 Destino <span className="text-red-400">*</span>
               </label>
               <select

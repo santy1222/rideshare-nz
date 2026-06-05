@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { MapPin, Calendar, Search } from "lucide-react";
 
 export function SearchForm() {
   const router = useRouter();
@@ -31,52 +30,45 @@ export function SearchForm() {
   const hasFilters = origin || destination || date;
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-md border border-gray-100 p-4">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-        <div className="relative">
-          <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Origen"
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
-            className="input-field pl-9"
-          />
-        </div>
-        <div className="relative">
-          <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500" />
-          <input
-            type="text"
-            placeholder="Destino"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            className="input-field pl-9"
-          />
-        </div>
-        <div className="relative">
-          <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="input-field pl-9"
-          />
-        </div>
-        <div className="flex gap-2">
-          <button type="submit" className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm">
-            <Search size={16} />
-            Buscar
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-100 p-3 max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-4 gap-2">
+      <div className="flex flex-col">
+        <label className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1 px-1">Origen</label>
+        <input
+          type="text"
+          value={origin}
+          onChange={(e) => setOrigin(e.target.value)}
+          placeholder="Auckland"
+          className="input-field"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1 px-1">Destino</label>
+        <input
+          type="text"
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+          placeholder="Wellington"
+          className="input-field"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1 px-1">Fecha</label>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="input-field"
+        />
+      </div>
+      <div className="flex gap-2 mt-auto">
+        <button type="submit" className="btn-primary flex-1 flex items-center justify-center gap-1.5 text-sm">
+          🔍 Buscar
+        </button>
+        {hasFilters && (
+          <button type="button" onClick={handleClear} className="btn-secondary text-sm px-3">
+            ✕
           </button>
-          {hasFilters && (
-            <button
-              type="button"
-              onClick={handleClear}
-              className="btn-secondary text-sm px-3"
-            >
-              ✕
-            </button>
-          )}
-        </div>
+        )}
       </div>
     </form>
   );

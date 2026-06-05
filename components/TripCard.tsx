@@ -1,7 +1,14 @@
 import Link from "next/link";
-import { MapPin, Calendar, Clock, Users, Star, DollarSign } from "lucide-react";
 import type { TripWithDriver } from "@/types";
-import { format } from "date-fns";
+
+function Avatar({ name }: { name: string }) {
+  const initials = name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
+  return (
+    <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-semibold flex-shrink-0">
+      {initials}
+    </div>
+  );
+}
 
 interface Props {
   trip: TripWithDriver;
@@ -9,76 +16,69 @@ interface Props {
 
 export function TripCard({ trip }: Props) {
   const driver = trip.profiles;
+  const isFull = trip.seats_available === 0;
+  const isLow = trip.seats_available === 1;
+
+  const dateStr = new Date(trip.departure_date).toLocaleDateString("es-NZ", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
 
   return (
     <Link href={`/trips/${trip.id}`}>
-      <div className="card hover:shadow-md hover:border-green-200 transition-all duration-200 cursor-pointer group">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex items-center gap-1.5 text-green-700 font-semibold text-sm bg-green-50 px-3 py-1 rounded-full">
-                <MapPin size={13} />
-                {trip.origin}
-              </div>
-              <span className="text-gray-400">→</span>
-              <div className="flex items-center gap-1.5 text-green-700 font-semibold text-sm bg-green-50 px-3 py-1 rounded-full">
-                <MapPin size={13} />
-                {trip.destination}
+      <div className={`bg-white border rounded-xl p-4 hover:border-brand-200 hover:-translate-y-0.5 transition-all cursor-pointer ${isFull ? "opacity-60 border-gray-100" : "border-gray-100"}`}>
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="font-display font-semibold text-lg text-gray-900 truncate">
+              {trip.origin}
+            </span>
+            <div className="flex flex-col items-center flex-1 max-w-[60px]">
+              <div className="w-full h-px bg-gray-200 relative">
+                <span className="absolute -right-1 -top-[5px] text-gray-300 text-base">›</span>
               </div>
             </div>
-
-            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-              <span className="flex items-center gap-1">
-                <Calendar size={14} />
-                {format(new Date(trip.departure_date), "dd/MM/yyyy")}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock size={14} />
-                {trip.departure_time.slice(0, 5)}
-              </span>
-              <span className="flex items-center gap-1">
-                <Users size={14} />
-                {trip.seats_available} asiento{trip.seats_available !== 1 ? "s" : ""}
-              </span>
-            </div>
-
-            {trip.description && (
-              <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-                {trip.description}
-              </p>
+            <span className="font-display font-semibold text-lg text-gray-900 truncate">
+              {trip.destination}
+            </span>
+          </div>
+          <div className="text-right ml-4 flex-shrink-0">
+            {trip.price != null ? (
+              <>
+                <div className="font-display font-semibold text-xl text-brand-500">
+                  ${trip.price}
+                </div>
+                <div className="text-xs text-gray-400">NZD / persona</div>
+              </>
+            ) : (
+              <div className="text-sm text-gray-400 italic">a coordinar</div>
             )}
           </div>
+        </div>
 
-          <div className="flex flex-col items-end gap-2 shrink-0">
-            <div className="text-right">
-              {trip.price != null ? (
-                <span className="flex items-center gap-0.5 text-green-700 font-bold text-xl font-sora">
-                  <DollarSign size={16} />
-                  {trip.price}
-                  <span className="text-xs font-normal text-gray-500 ml-0.5">NZD</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Avatar name={driver.full_name ?? "?"} />
+            <div>
+              <div className="text-sm font-medium text-gray-800">{driver.full_name}</div>
+              {driver.avg_rating > 0 && (
+                <span className="flex items-center gap-0.5 text-xs text-gray-400">
+                  <span className="text-amber-400">★</span>
+                  {driver.avg_rating.toFixed(1)}
                 </span>
-              ) : (
-                <span className="text-gray-400 text-sm italic">a coordinar</span>
               )}
             </div>
+          </div>
 
-            {driver && (
-              <div className="flex items-center gap-2 mt-1">
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm font-sora">
-                  {driver.full_name?.charAt(0).toUpperCase()}
-                </div>
-                <div className="text-right">
-                  <p className="text-xs font-medium text-gray-700">
-                    {driver.full_name}
-                  </p>
-                  {driver.avg_rating > 0 && (
-                    <p className="flex items-center justify-end gap-0.5 text-xs text-amber-500">
-                      <Star size={11} fill="currentColor" />
-                      {driver.avg_rating.toFixed(1)}
-                    </p>
-                  )}
-                </div>
-              </div>
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <span>📅 {dateStr}</span>
+            <span>🕐 {trip.departure_time.slice(0, 5)}</span>
+            {isFull ? (
+              <span className="bg-red-50 text-red-600 border border-red-100 rounded-full px-2 py-0.5 font-medium">Completo</span>
+            ) : isLow ? (
+              <span className="bg-amber-50 text-amber-700 border border-amber-100 rounded-full px-2 py-0.5 font-medium">1 lugar</span>
+            ) : (
+              <span className="bg-brand-50 text-brand-700 border border-brand-100 rounded-full px-2 py-0.5 font-medium">{trip.seats_available} lugares</span>
             )}
           </div>
         </div>

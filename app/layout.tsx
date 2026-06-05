@@ -18,15 +18,15 @@ export default function RootLayout({
       <body>
         <Navbar />
         <main className="min-h-screen">{children}</main>
-        <footer className="bg-green-900 text-green-100 py-8 mt-16">
+        <footer className="bg-brand-900 text-brand-100 py-8 mt-16">
           <div className="max-w-6xl mx-auto px-4 text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <CarIcon />
-              <span className="font-sora font-bold text-white text-lg">
+              <span className="font-display font-semibold text-white text-lg">
                 Ride Share NZ
               </span>
             </div>
-            <p className="text-sm text-green-300">
+            <p className="text-sm text-brand-100 opacity-70">
               Conectando viajeros en Nueva Zelanda · {new Date().getFullYear()}
             </p>
           </div>
