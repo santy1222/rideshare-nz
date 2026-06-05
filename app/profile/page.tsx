@@ -4,6 +4,8 @@ import { format } from "date-fns";
 import { Star, MapPin, Calendar, Phone, User } from "lucide-react";
 import type { Review, Trip, Booking } from "@/types";
 import { ProfileEditForm } from "./ProfileEditForm";
+import { CancelBookingButton } from "./CancelBookingButton";
+import Link from "next/link";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -134,34 +136,41 @@ export default async function ProfilePage() {
         {bookings && bookings.length > 0 ? (
           <div className="space-y-3">
             {(bookings as (Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status"> })[]).map((b) => (
-              <a
+              <div
                 key={b.id}
-                href={`/trips/${b.trip.id}`}
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100"
+                className="flex items-center justify-between p-3 rounded-xl border border-gray-100 gap-2"
               >
-                <div className="flex items-center gap-1 text-sm font-medium text-gray-700">
-                  <MapPin size={13} className="text-brand-500" />
-                  {b.trip.origin} → {b.trip.destination}
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={13} />
-                    {format(new Date(b.trip.departure_date), "dd/MM/yy")}
-                  </span>
-                  <span className="text-xs text-gray-400">{b.trip.departure_time.slice(0, 5)}</span>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      b.trip.status === "active"
-                        ? "bg-brand-50 text-brand-700"
-                        : b.trip.status === "cancelled"
-                        ? "bg-red-100 text-red-600"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
-                  >
-                    {b.trip.status === "active" ? "Confirmado" : b.trip.status === "cancelled" ? "Cancelado" : "Completado"}
-                  </span>
-                </div>
-              </a>
+                <Link
+                  href={`/trips/${b.trip.id}`}
+                  className="flex-1 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 hover:text-brand-700 transition-colors"
+                >
+                  <div className="flex items-center gap-1 text-sm font-medium text-gray-700">
+                    <MapPin size={13} className="text-brand-500 shrink-0" />
+                    {b.trip.origin} → {b.trip.destination}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <Calendar size={12} />
+                      {format(new Date(b.trip.departure_date), "dd/MM/yy")}
+                    </span>
+                    <span className="text-xs text-gray-400">{b.trip.departure_time.slice(0, 5)}</span>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                        b.trip.status === "active"
+                          ? "bg-brand-50 text-brand-700"
+                          : b.trip.status === "cancelled"
+                          ? "bg-red-100 text-red-600"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {b.trip.status === "active" ? "Confirmado" : b.trip.status === "cancelled" ? "Cancelado" : "Completado"}
+                    </span>
+                  </div>
+                </Link>
+                {b.trip.status === "active" && (
+                  <CancelBookingButton bookingId={b.id} />
+                )}
+              </div>
             ))}
           </div>
         ) : (
