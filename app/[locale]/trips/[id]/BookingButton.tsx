@@ -34,7 +34,10 @@ export function BookingButton({
 
     const { error: bookingError } = await supabase
       .from("bookings")
-      .insert({ trip_id: tripId, passenger_id: userId });
+      .upsert(
+        { trip_id: tripId, passenger_id: userId, status: "confirmed" },
+        { onConflict: "trip_id,passenger_id" }
+      );
 
     if (bookingError) {
       setError(bookingError.message || t("error"));
