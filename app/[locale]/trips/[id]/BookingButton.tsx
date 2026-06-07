@@ -37,7 +37,7 @@ export function BookingButton({
       .insert({ trip_id: tripId, passenger_id: userId });
 
     if (bookingError) {
-      setError(t("error"));
+      setError(bookingError.message || t("error"));
     } else {
       const { error: notifError } = await supabase.from("notifications").insert({
         user_id: driverId,
