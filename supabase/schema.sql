@@ -36,8 +36,8 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
-create policy "Anyone can read profiles"
-  on public.profiles for select using (true);
+create policy "Authenticated users can read profiles"
+  on public.profiles for select using (auth.uid() is not null);
 
 create policy "Users can update own profile"
   on public.profiles for update using (auth.uid() = id);
@@ -101,8 +101,15 @@ alter table public.reviews enable row level security;
 create policy "Anyone can read reviews"
   on public.reviews for select using (true);
 
-create policy "Authenticated users can insert reviews"
-  on public.reviews for insert with check (auth.uid() = reviewer_id);
+create policy "Trip participants can insert reviews"
+  on public.reviews for insert
+  with check (
+    auth.uid() = reviewer_id
+    and (
+      trip_id in (select id from public.trips where driver_id = auth.uid())
+      or trip_id in (select bk.trip_id from public.bookings bk where bk.passenger_id = auth.uid())
+    )
+  );
 
 -- =============================================
 -- TRIGGER: Update avg_rating on profiles after review insert
@@ -174,7 +181,12 @@ create policy "Passengers and drivers can see bookings"
 
 create policy "Authenticated users can create bookings"
   on public.bookings for insert
-  with check (auth.uid() = passenger_id);
+  with check (
+    auth.uid() = passenger_id
+    and trip_id not in (
+      select id from public.trips where driver_id = auth.uid()
+    )
+  );
 
 create policy "Passengers can cancel own bookings"
   on public.bookings for update
@@ -236,6 +248,31 @@ create index if not exists idx_bookings_passenger_id on public.bookings(passenge
 create index if not exists idx_messages_sender_id on public.messages(sender_id);
 create index if not exists idx_messages_receiver_id on public.messages(receiver_id);
 create index if not exists idx_messages_trip_id on public.messages(trip_id);
+
+create index if not exists idx_notifications_user_id on public.notifications(user_id);
+create index if not exists idx_notifications_unread on public.notifications(user_id, read) where read = false;
+
+-- =============================================
+-- NOTIFICATIONS
+-- =============================================
+create table if not exists public.notifications (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references public.profiles(id) on delete cascade not null,
+  trip_id uuid references public.trips(id) on delete set null,
+  message text not null,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table public.notifications enable row level security;
+
+create policy "Users can read own notifications"
+  on public.notifications for select
+  using (auth.uid() = user_id);
+
+create policy "Users can update own notifications"
+  on public.notifications for update
+  using (auth.uid() = user_id);
 
 -- =============================================
 -- SAMPLE DATA (optional - remove in production)
