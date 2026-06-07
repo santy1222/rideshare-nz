@@ -119,7 +119,9 @@ export default async function ProfilePage() {
         <h3 className="font-display font-semibold text-gray-800 mb-4">{t("joinedTrips")}</h3>
         {bookings && bookings.length > 0 ? (
           <div className="space-y-3">
-            {(bookings as (Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status" | "driver_id"> | null })[]).filter((b) => b.trip !== null).map((b) => (
+            {(bookings as (Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status" | "driver_id"> | null })[])
+              .filter((b): b is Booking & { trip: Pick<Trip, "id" | "origin" | "destination" | "departure_date" | "departure_time" | "status" | "driver_id"> } => b.trip !== null)
+              .map((b) => (
               <div key={b.id} className="flex items-center justify-between p-3 rounded-xl border border-gray-100 gap-2">
                 <Link
                   href={`/trips/${b.trip.id}`}
