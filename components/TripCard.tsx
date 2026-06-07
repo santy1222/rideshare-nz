@@ -12,7 +12,7 @@ interface Props {
 export function TripCard({ trip }: Props) {
   const t = useTranslations("TripCard");
   const locale = useLocale();
-  const driver = trip.profiles;
+  const driver = trip.profiles ?? null;
   const isFull = trip.seats_available === 0;
   const isLow = trip.seats_available === 1;
 
@@ -48,13 +48,13 @@ export function TripCard({ trip }: Props) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Avatar name={driver.full_name ?? "?"} avatarUrl={driver.avatar_url} size="sm" />
+            <Avatar name={driver?.full_name ?? "?"} avatarUrl={driver?.avatar_url} size="sm" />
             <div>
-              <div className="text-sm font-medium text-gray-800">{driver.full_name}</div>
-              {driver.avg_rating > 0 && (
+              <div className="text-sm font-medium text-gray-800">{driver?.full_name ?? "—"}</div>
+              {(driver?.avg_rating ?? 0) > 0 && (
                 <span className="flex items-center gap-0.5 text-xs text-gray-400">
                   <span className="text-amber-400">★</span>
-                  {driver.avg_rating.toFixed(1)}
+                  {driver!.avg_rating.toFixed(1)}
                 </span>
               )}
             </div>
