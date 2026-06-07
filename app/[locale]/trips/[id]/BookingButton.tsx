@@ -41,7 +41,6 @@ export function BookingButton({
     } else {
       await supabase.from("notifications").insert({
         user_id: driverId,
-        type: "new_booking",
         message: t("notificationJoined", { name: passengerName, route: tripRoute }),
         trip_id: tripId,
       });
