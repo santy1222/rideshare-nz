@@ -1,0 +1,94 @@
+"use client";
+
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Star } from "lucide-react";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+
+interface Props {
+  tripId: string;
+  reviewedId: string;
+  userId: string;
+}
+
+export function ReviewForm({ tripId, reviewedId, userId }: Props) {
+  const t = useTranslations("Review");
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const supabase = createClient();
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (rating === 0) {
+      setError(t("selectRating"));
+      return;
+    }
+    setLoading(true);
+    setError("");
+
+    const { error: insertError } = await supabase.from("reviews").insert({
+      trip_id: tripId,
+      reviewer_id: userId,
+      reviewed_id: reviewedId,
+      rating,
+      comment: comment || null,
+    });
+
+    if (insertError) {
+      setError(insertError.code === "23505" ? t("alreadyReviewed") : t("submitError"));
+      setLoading(false);
+      return;
+    }
+
+    setDone(true);
+    router.refresh();
+  }
+
+  if (done) {
+    return (
+      <div className="bg-brand-50 text-brand-700 px-4 py-3 rounded-xl text-sm font-medium">
+        {t("thanks")}
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-t border-gray-100 pt-5">
+      <h4 className="font-semibold text-gray-700 text-sm mb-3">{t("title")}</h4>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        {error && (
+          <div className="bg-red-50 text-red-600 text-xs px-3 py-2 rounded-lg">{error}</div>
+        )}
+        <div className="flex gap-1">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onMouseEnter={() => setHover(s)}
+              onMouseLeave={() => setHover(0)}
+              onClick={() => setRating(s)}
+            >
+              <Star size={24} className={s <= (hover || rating) ? "text-amber-400 fill-amber-400" : "text-gray-300 fill-gray-300"} />
+            </button>
+          ))}
+        </div>
+        <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder={t("commentPlaceholder")}
+          rows={2}
+          className="input-field resize-none text-sm"
+        />
+        <button type="submit" disabled={loading} className="btn-primary text-sm">
+          {loading ? t("submitting") : t("submit")}
+        </button>
+      </form>
+    </div>
+  );
+}

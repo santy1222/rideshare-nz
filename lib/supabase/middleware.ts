@@ -27,21 +27,25 @@ export async function updateSession(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
+  const pathname = request.nextUrl.pathname;
+  // Strip locale prefix (/en or /es) to get the canonical path
+  const pathnameWithoutLocale = pathname.replace(/^\/(en|es)/, "") || "/";
+  const locale = pathname.match(/^\/(en|es)/)?.[1] ?? "en";
+
   const protectedRoutes = ["/trips/new", "/profile"];
   const adminRoutes = ["/admin"];
-  const pathname = request.nextUrl.pathname;
 
-  if (!user && protectedRoutes.some((r) => pathname.startsWith(r))) {
+  if (!user && protectedRoutes.some((r) => pathnameWithoutLocale.startsWith(r))) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("redirect", pathname);
+    url.pathname = `/${locale}/login`;
+    url.searchParams.set("redirect", pathnameWithoutLocale);
     return NextResponse.redirect(url);
   }
 
-  if (adminRoutes.some((r) => pathname.startsWith(r))) {
+  if (adminRoutes.some((r) => pathnameWithoutLocale.startsWith(r))) {
     if (!user) {
       const url = request.nextUrl.clone();
-      url.pathname = "/login";
+      url.pathname = `/${locale}/login`;
       return NextResponse.redirect(url);
     }
     const { data: profile } = await supabase
@@ -51,7 +55,7 @@ export async function updateSession(request: NextRequest) {
       .single();
     if (profile?.role !== "admin") {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
+      url.pathname = `/${locale}/`;
       return NextResponse.redirect(url);
     }
   }

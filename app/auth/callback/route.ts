@@ -32,5 +32,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(`${origin}/login?error=confirmacion`);
+  return NextResponse.redirect(`${origin}/en/login?error=confirmacion`);
 }

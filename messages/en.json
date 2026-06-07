@@ -1,0 +1,238 @@
+{
+  "Metadata": {
+    "title": "Ride Share NZ – Shared rides in New Zealand",
+    "description": "Find and post shared rides across New Zealand. Save on transport and meet people."
+  },
+  "Nav": {
+    "newZealand": "New Zealand",
+    "publishTrip": "+ Post trip",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "myProfile": "My profile",
+    "admin": "Admin",
+    "signOut": "Sign out",
+    "signIn": "Sign in",
+    "register": "Register"
+  },
+  "Footer": {
+    "tagline": "Connecting travellers across New Zealand"
+  },
+  "Home": {
+    "ecoTagline": "Save money, protect the planet",
+    "subtitle": "Shared rides across New Zealand",
+    "tripsCount": "{count, plural, one {# trip available} other {# trips available}}",
+    "newZealand": "New Zealand",
+    "searchResults": "Search results",
+    "availableTrips": "Available trips",
+    "publishTrip": "+ Post trip",
+    "noTrips": "No trips available",
+    "tryFilters": "Try different filters",
+    "whyNotYours": "Why not post yours?",
+    "travelingSoon": "Travelling soon?",
+    "publishCta": "Post your trip and share the costs with others"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been removed.",
+    "backHome": "Back to home"
+  },
+  "Login": {
+    "welcome": "Welcome back",
+    "subtitle": "Sign in to continue",
+    "email": "Email",
+    "emailPlaceholder": "you@email.com",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register here",
+    "invalidCredentials": "Incorrect email or password"
+  },
+  "Register": {
+    "title": "Create your account",
+    "subtitle": "Free and in less than 2 minutes",
+    "fullName": "Full name *",
+    "fullNamePlaceholder": "John Smith",
+    "phone": "Phone (WhatsApp)",
+    "phonePlaceholder": "+64 21 123 4567",
+    "email": "Email *",
+    "emailPlaceholder": "you@email.com",
+    "password": "Password *",
+    "passwordPlaceholder": "Minimum 6 characters",
+    "passwordError": "Password must be at least 6 characters",
+    "create": "Create account",
+    "creating": "Creating account...",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "checkEmail": "Check your email",
+    "confirmationSent": "We sent a confirmation link to",
+    "clickLink": "Click the link in the email to activate your account. If you don't see it, check your spam folder.",
+    "goToSignIn": "Go to sign in"
+  },
+  "Profile": {
+    "title": "My profile",
+    "reviews": "{count, plural, one {# review} other {# reviews}}",
+    "myTrips": "My posted trips",
+    "noMyTrips": "You haven't posted any trips yet.",
+    "joinedTrips": "Trips I've joined",
+    "noJoinedTrips": "You haven't joined any trips yet.",
+    "receivedReviews": "Reviews received",
+    "noReviews": "No reviews yet.",
+    "statusActive": "Active",
+    "statusCancelled": "Cancelled",
+    "statusCompleted": "Completed",
+    "statusConfirmed": "Confirmed"
+  },
+  "ProfileEdit": {
+    "title": "Edit information",
+    "uploadError": "Upload error: ",
+    "changesSaved": "Changes saved!",
+    "changePhoto": "Change photo",
+    "uploading": "Uploading...",
+    "photoHint": "JPG, PNG or WEBP · max 5MB",
+    "fullName": "Full name",
+    "phone": "Phone (WhatsApp)",
+    "phonePlaceholder": "+64 21 123 4567",
+    "save": "Save changes",
+    "saving": "Saving..."
+  },
+  "CancelBooking": {
+    "confirm": "Cancel?",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "title": "Cancel booking"
+  },
+  "NewTrip": {
+    "title": "Post a trip",
+    "subtitle": "Fill in your trip details",
+    "sameLocationError": "Origin and destination must be different",
+    "errorPrefix": "Error: ",
+    "origin": "Origin",
+    "originPlaceholder": "Select city",
+    "destination": "Destination",
+    "destinationPlaceholder": "Select city",
+    "departureDate": "Departure date",
+    "departureTime": "Departure time",
+    "seats": "Available seats",
+    "price": "Price per person (NZD)",
+    "pricePlaceholder": "Leave empty to arrange",
+    "priceHint": "No price → will show as \"to be arranged\"",
+    "description": "Additional notes",
+    "descriptionPlaceholder": "e.g. On time departure, comfortable car, stops available...",
+    "cancel": "Cancel",
+    "post": "Post trip",
+    "posting": "Posting..."
+  },
+  "TripDetail": {
+    "backToTrips": "Back to trips",
+    "driver": "Driver",
+    "toArrange": "to be arranged",
+    "perPerson": "per person",
+    "noPhone": "No phone registered",
+    "signInToSeePhone": "Sign in to see the phone number",
+    "signInToJoin": "Sign in to join this trip",
+    "confirmedPassengers": "Confirmed passengers",
+    "driverReviews": "Driver reviews",
+    "noReviews": "No reviews yet",
+    "signInToReview": "Sign in to leave a review",
+    "cancelTrip": "Cancel trip",
+    "seatsAvailable": "{count, plural, one {# seat available} other {# seats available}}",
+    "passengersJoined": "{count, plural, one {# person has} other {# people have}} joined this trip"
+  },
+  "Booking": {
+    "error": "Could not book the seat. Please try again.",
+    "alreadyJoined": "You've already joined this trip",
+    "contactVisible": "The driver can see your contact information",
+    "tripFull": "This trip is full",
+    "noSeats": "No seats available",
+    "processing": "Processing...",
+    "joinTrip": "Join trip",
+    "seatsLabel": "{count, plural, one {· # seat available} other {· # seats available}}",
+    "notificationJoined": "{name} joined your trip {route}"
+  },
+  "Review": {
+    "selectRating": "Select a rating",
+    "alreadyReviewed": "You've already left a review for this trip",
+    "submitError": "Error submitting review",
+    "thanks": "Thank you for your review!",
+    "title": "Leave a review",
+    "commentPlaceholder": "Optional comment...",
+    "submitting": "Submitting...",
+    "submit": "Submit review"
+  },
+  "Contact": {
+    "error": "Error sending message. Please try again.",
+    "viewConversation": "View conversation with {name}",
+    "title": "Send a message to the driver",
+    "messagePlaceholder": "Hi {name}, I'm interested in your trip...",
+    "messageLabel": "Message for {name}",
+    "submitting": "Sending...",
+    "send": "Send message"
+  },
+  "Messages": {
+    "title": "Messages",
+    "empty": "You don't have any messages yet",
+    "hint": "Contact a driver from a trip page",
+    "user": "User"
+  },
+  "Thread": {
+    "empty": "No messages yet. Say hello!",
+    "placeholder": "Write a message...",
+    "user": "User"
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "hint": "We'll notify you when someone joins your trips"
+  },
+  "Admin": {
+    "title": "Admin panel",
+    "subtitle": "User and trip management",
+    "totalUsers": "Total users",
+    "activeUsers": "Active users",
+    "suspendedUsers": "Suspended users",
+    "publishedTrips": "Published trips",
+    "users": "Users",
+    "name": "Name",
+    "phone": "Phone",
+    "rating": "Rating",
+    "role": "Role",
+    "status": "Status",
+    "registered": "Registered",
+    "actions": "Actions",
+    "suspended": "Suspended",
+    "active": "Active",
+    "recentTrips": "Recent trips",
+    "route": "Route",
+    "driver": "Driver",
+    "date": "Date",
+    "price": "Price",
+    "toArrange": "to be arranged",
+    "cancelled": "Cancelled",
+    "completed": "Completed",
+    "activate": "Activate",
+    "suspend": "Suspend",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this user? This action cannot be undone."
+  },
+  "Search": {
+    "origin": "Origin",
+    "originPlaceholder": "Auckland",
+    "destination": "Destination",
+    "destinationPlaceholder": "Wellington",
+    "date": "Date",
+    "search": "Search",
+    "clear": "Clear"
+  },
+  "TripCard": {
+    "perPerson": "NZD / person",
+    "toArrange": "to be arranged",
+    "full": "Full",
+    "oneSeat": "1 seat",
+    "seats": "{count} seats"
+  },
+  "CancelBookingNotif": {
+    "message": "{name} cancelled their seat on your trip {route}"
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "Metadata": {
+    "title": "Ride Share NZ – Viajes compartidos en Nueva Zelanda",
+    "description": "Encontrá y publicá viajes compartidos en toda Nueva Zelanda. Ahorrá en transporte y conocé gente."
+  },
+  "Nav": {
+    "newZealand": "Nueva Zelanda",
+    "publishTrip": "+ Publicar viaje",
+    "messages": "Mensajes",
+    "notifications": "Notificaciones",
+    "myProfile": "Mi perfil",
+    "admin": "Admin",
+    "signOut": "Salir",
+    "signIn": "Iniciar sesión",
+    "register": "Registrarse"
+  },
+  "Footer": {
+    "tagline": "Conectando viajeros en Nueva Zelanda"
+  },
+  "Home": {
+    "ecoTagline": "Ahorrá dinero, cuidá el planeta",
+    "subtitle": "Viajes compartidos por toda Nueva Zelanda",
+    "tripsCount": "{count, plural, one {# viaje disponible} other {# viajes disponibles}}",
+    "newZealand": "Nueva Zelanda",
+    "searchResults": "Resultados de búsqueda",
+    "availableTrips": "Viajes disponibles",
+    "publishTrip": "+ Publicar viaje",
+    "noTrips": "No hay viajes disponibles",
+    "tryFilters": "Probá con otros filtros",
+    "whyNotYours": "¿Por qué no publicás el tuyo?",
+    "travelingSoon": "¿Viajás pronto?",
+    "publishCta": "Publicá tu viaje y compartí gastos con otros"
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscás no existe o fue eliminada.",
+    "backHome": "Volver al inicio"
+  },
+  "Login": {
+    "welcome": "Bienvenido de vuelta",
+    "subtitle": "Iniciá sesión para continuar",
+    "email": "Email",
+    "emailPlaceholder": "tu@email.com",
+    "password": "Contraseña",
+    "signIn": "Iniciar sesión",
+    "signingIn": "Iniciando sesión...",
+    "noAccount": "¿No tenés cuenta?",
+    "registerLink": "Registrate acá",
+    "invalidCredentials": "Email o contraseña incorrectos"
+  },
+  "Register": {
+    "title": "Creá tu cuenta",
+    "subtitle": "Gratis y en menos de 2 minutos",
+    "fullName": "Nombre completo *",
+    "fullNamePlaceholder": "John Smith",
+    "phone": "Teléfono (WhatsApp)",
+    "phonePlaceholder": "+64 21 123 4567",
+    "email": "Email *",
+    "emailPlaceholder": "tu@email.com",
+    "password": "Contraseña *",
+    "passwordPlaceholder": "Mínimo 6 caracteres",
+    "passwordError": "La contraseña debe tener al menos 6 caracteres",
+    "create": "Crear cuenta",
+    "creating": "Creando cuenta...",
+    "haveAccount": "¿Ya tenés cuenta?",
+    "signInLink": "Iniciá sesión",
+    "checkEmail": "Revisá tu correo",
+    "confirmationSent": "Te enviamos un enlace de confirmación a",
+    "clickLink": "Hacé clic en el enlace del email para activar tu cuenta. Si no lo ves, revisá la carpeta de spam.",
+    "goToSignIn": "Ir a iniciar sesión"
+  },
+  "Profile": {
+    "title": "Mi perfil",
+    "reviews": "{count, plural, one {# reseña} other {# reseñas}}",
+    "myTrips": "Mis viajes publicados",
+    "noMyTrips": "No publicaste viajes todavía.",
+    "joinedTrips": "Viajes a los que me uní",
+    "noJoinedTrips": "Todavía no te uniste a ningún viaje.",
+    "receivedReviews": "Reseñas recibidas",
+    "noReviews": "Sin reseñas todavía.",
+    "statusActive": "Activo",
+    "statusCancelled": "Cancelado",
+    "statusCompleted": "Completado",
+    "statusConfirmed": "Confirmado"
+  },
+  "ProfileEdit": {
+    "title": "Editar información",
+    "uploadError": "Error al subir: ",
+    "changesSaved": "¡Cambios guardados!",
+    "changePhoto": "Cambiar foto",
+    "uploading": "Subiendo...",
+    "photoHint": "JPG, PNG o WEBP · máx 5MB",
+    "fullName": "Nombre completo",
+    "phone": "Teléfono (WhatsApp)",
+    "phonePlaceholder": "+64 21 123 4567",
+    "save": "Guardar cambios",
+    "saving": "Guardando..."
+  },
+  "CancelBooking": {
+    "confirm": "¿Cancelar?",
+    "yes": "Sí",
+    "no": "No",
+    "cancel": "Cancelar",
+    "title": "Cancelar reserva"
+  },
+  "NewTrip": {
+    "title": "Publicar viaje",
+    "subtitle": "Completá los datos de tu viaje",
+    "sameLocationError": "El origen y destino deben ser diferentes",
+    "errorPrefix": "Error: ",
+    "origin": "Origen",
+    "originPlaceholder": "Seleccioná ciudad",
+    "destination": "Destino",
+    "destinationPlaceholder": "Seleccioná ciudad",
+    "departureDate": "Fecha de salida",
+    "departureTime": "Hora de salida",
+    "seats": "Asientos disponibles",
+    "price": "Precio por persona (NZD)",
+    "pricePlaceholder": "Dejá vacío si es a coordinar",
+    "priceHint": "Sin precio → aparecerá como \"a coordinar\"",
+    "description": "Descripción adicional",
+    "descriptionPlaceholder": "Ej: Salida puntual, auto cómodo, podemos hacer paradas...",
+    "cancel": "Cancelar",
+    "post": "Publicar viaje",
+    "posting": "Publicando..."
+  },
+  "TripDetail": {
+    "backToTrips": "Volver a viajes",
+    "driver": "Conductor",
+    "toArrange": "a coordinar",
+    "perPerson": "por persona",
+    "noPhone": "Sin teléfono registrado",
+    "signInToSeePhone": "Iniciá sesión para ver el teléfono",
+    "signInToJoin": "Iniciá sesión para unirte al viaje",
+    "confirmedPassengers": "Pasajeros confirmados",
+    "driverReviews": "Reseñas del conductor",
+    "noReviews": "Sin reseñas todavía",
+    "signInToReview": "Iniciá sesión para dejar una reseña",
+    "cancelTrip": "Cancelar viaje",
+    "seatsAvailable": "{count, plural, one {# asiento disponible} other {# asientos disponibles}}",
+    "passengersJoined": "{count, plural, one {# persona se unió} other {# personas se unieron}} a este viaje"
+  },
+  "Booking": {
+    "error": "No se pudo reservar el lugar. Intentá de nuevo.",
+    "alreadyJoined": "Ya te uniste a este viaje",
+    "contactVisible": "El conductor puede ver tu información de contacto",
+    "tripFull": "Este viaje está completo",
+    "noSeats": "No quedan asientos disponibles",
+    "processing": "Procesando...",
+    "joinTrip": "Unirse al viaje",
+    "seatsLabel": "{count, plural, one {· # lugar disponible} other {· # lugares disponibles}}",
+    "notificationJoined": "{name} se unió a tu viaje {route}"
+  },
+  "Review": {
+    "selectRating": "Seleccioná una puntuación",
+    "alreadyReviewed": "Ya dejaste una reseña para este viaje",
+    "submitError": "Error al enviar la reseña",
+    "thanks": "¡Gracias por tu reseña!",
+    "title": "Dejar una reseña",
+    "commentPlaceholder": "Comentario opcional...",
+    "submitting": "Enviando...",
+    "submit": "Enviar reseña"
+  },
+  "Contact": {
+    "error": "Error al enviar el mensaje. Intentá de nuevo.",
+    "viewConversation": "Ver conversación con {name}",
+    "title": "Enviar mensaje al conductor",
+    "messagePlaceholder": "Hola {name}, estoy interesado en tu viaje...",
+    "messageLabel": "Mensaje para {name}",
+    "submitting": "Enviando...",
+    "send": "Enviar mensaje"
+  },
+  "Messages": {
+    "title": "Mensajes",
+    "empty": "No tenés mensajes todavía",
+    "hint": "Contactá a un conductor desde la página de un viaje",
+    "user": "Usuario"
+  },
+  "Thread": {
+    "empty": "No hay mensajes. ¡Escribí el primero!",
+    "placeholder": "Escribí un mensaje...",
+    "user": "Usuario"
+  },
+  "Notifications": {
+    "title": "Notificaciones",
+    "empty": "Sin notificaciones",
+    "hint": "Te avisaremos cuando alguien se una a tus viajes"
+  },
+  "Admin": {
+    "title": "Panel de administración",
+    "subtitle": "Gestión de usuarios y viajes",
+    "totalUsers": "Usuarios totales",
+    "activeUsers": "Usuarios activos",
+    "suspendedUsers": "Usuarios suspendidos",
+    "publishedTrips": "Viajes publicados",
+    "users": "Usuarios",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "rating": "Rating",
+    "role": "Rol",
+    "status": "Estado",
+    "registered": "Registrado",
+    "actions": "Acciones",
+    "suspended": "Suspendido",
+    "active": "Activo",
+    "recentTrips": "Viajes recientes",
+    "route": "Ruta",
+    "driver": "Conductor",
+    "date": "Fecha",
+    "price": "Precio",
+    "toArrange": "a coordinar",
+    "cancelled": "Cancelado",
+    "completed": "Completado",
+    "activate": "Activar",
+    "suspend": "Suspender",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Estás seguro de que querés eliminar este usuario? Esta acción no se puede deshacer."
+  },
+  "Search": {
+    "origin": "Origen",
+    "originPlaceholder": "Auckland",
+    "destination": "Destino",
+    "destinationPlaceholder": "Wellington",
+    "date": "Fecha",
+    "search": "Buscar",
+    "clear": "Limpiar"
+  },
+  "TripCard": {
+    "perPerson": "NZD / persona",
+    "toArrange": "a coordinar",
+    "full": "Completo",
+    "oneSeat": "1 lugar",
+    "seats": "{count} lugares"
+  },
+  "CancelBookingNotif": {
+    "message": "{name} canceló su lugar en tu viaje {route}"
+  }
+}
