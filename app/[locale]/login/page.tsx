@@ -87,6 +87,11 @@ function LoginForm() {
           >
             {loading ? t("signingIn") : t("signIn")}
           </button>
+          <div className="text-center">
+            <Link href="/forgot-password" className="text-xs text-gray-400 hover:text-brand-500 transition-colors">
+              {t("forgotPassword")}
+            </Link>
+          </div>
         </form>
 
         <p className="text-xs text-gray-400 text-center mt-4">

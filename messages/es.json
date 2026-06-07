@@ -46,7 +46,8 @@
     "signingIn": "Iniciando sesión...",
     "noAccount": "¿No tenés cuenta?",
     "registerLink": "Registrate acá",
-    "invalidCredentials": "Email o contraseña incorrectos"
+    "invalidCredentials": "Email o contraseña incorrectos",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
   },
   "Register": {
     "title": "Creá tu cuenta",
@@ -234,5 +235,29 @@
   },
   "CancelBookingNotif": {
     "message": "{name} canceló su lugar en tu viaje {route}"
+  },
+  "ForgotPassword": {
+    "title": "Recuperar contraseña",
+    "subtitle": "Ingresá tu email y te enviamos un enlace para resetearla",
+    "email": "Email",
+    "emailPlaceholder": "tu@email.com",
+    "send": "Enviar enlace",
+    "sending": "Enviando...",
+    "backToLogin": "Volver al inicio de sesión",
+    "sentTitle": "Revisá tu bandeja de entrada",
+    "sentDescription": "Te enviamos un enlace para recuperar tu contraseña. Puede tardar unos minutos.",
+    "error": "Algo salió mal. Por favor intentá de nuevo."
+  },
+  "ResetPassword": {
+    "title": "Nueva contraseña",
+    "subtitle": "Ingresá tu nueva contraseña",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "save": "Guardar contraseña",
+    "saving": "Guardando...",
+    "mismatch": "Las contraseñas no coinciden",
+    "tooShort": "La contraseña debe tener al menos 6 caracteres",
+    "success": "¡Contraseña actualizada! Redirigiendo...",
+    "error": "Algo salió mal. Por favor intentá de nuevo."
   }
 }

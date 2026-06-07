@@ -46,7 +46,8 @@
     "signingIn": "Signing in...",
     "noAccount": "Don't have an account?",
     "registerLink": "Register here",
-    "invalidCredentials": "Incorrect email or password"
+    "invalidCredentials": "Incorrect email or password",
+    "forgotPassword": "Forgot your password?"
   },
   "Register": {
     "title": "Create your account",
@@ -234,5 +235,29 @@
   },
   "CancelBookingNotif": {
     "message": "{name} cancelled their seat on your trip {route}"
+  },
+  "ForgotPassword": {
+    "title": "Reset your password",
+    "subtitle": "Enter your email and we'll send you a reset link",
+    "email": "Email",
+    "emailPlaceholder": "you@email.com",
+    "send": "Send reset link",
+    "sending": "Sending...",
+    "backToLogin": "Back to sign in",
+    "sentTitle": "Check your inbox",
+    "sentDescription": "We've sent a password reset link to your email. It may take a few minutes.",
+    "error": "Something went wrong. Please try again."
+  },
+  "ResetPassword": {
+    "title": "New password",
+    "subtitle": "Enter your new password below",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "save": "Save password",
+    "saving": "Saving...",
+    "mismatch": "Passwords don't match",
+    "tooShort": "Password must be at least 6 characters",
+    "success": "Password updated! Redirecting...",
+    "error": "Something went wrong. Please try again."
   }
 }
