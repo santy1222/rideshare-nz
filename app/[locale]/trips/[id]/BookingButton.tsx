@@ -39,11 +39,12 @@ export function BookingButton({
     if (bookingError) {
       setError(t("error"));
     } else {
-      await supabase.from("notifications").insert({
+      const { error: notifError } = await supabase.from("notifications").insert({
         user_id: driverId,
         message: t("notificationJoined", { name: passengerName, route: tripRoute }),
         trip_id: tripId,
       });
+      if (notifError) console.error("Notification insert failed:", notifError.message);
 
       setBooked(true);
       router.refresh();
