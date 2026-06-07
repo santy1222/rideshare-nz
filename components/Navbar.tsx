@@ -84,7 +84,10 @@ export function Navbar() {
       className="text-xs px-2.5 py-1 border border-gray-200 rounded-full text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-colors font-medium"
       title={locale === "en" ? "Cambiar a español" : "Switch to English"}
     >
-      {locale === "en" ? "🇪🇸 ES" : "🇬🇧 EN"}
+      {locale === "en"
+        ? <><span className="fi fi-es rounded-sm mr-1" />ES</>
+        : <><span className="fi fi-gb rounded-sm mr-1" />EN</>
+      }
     </button>
   );
 
