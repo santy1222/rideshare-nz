@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "@/i18n/navigation";
 import { Send, MessageCircle, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { validateMessage } from "@/lib/validation";
 
 interface Props {
   tripId: string;
@@ -16,27 +16,30 @@ interface Props {
 
 export function ContactForm({ tripId, userId, receiverId, receiverName, hasConversation }: Props) {
   const t = useTranslations("Contact");
+  const tv = useTranslations("Validation");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const supabase = createClient();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!message.trim()) return;
+    const msgErr = validateMessage(message);
+    if (msgErr) { setError(tv(msgErr as Parameters<typeof tv>[0])); return; }
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.from("messages").insert({
-      trip_id: tripId,
-      sender_id: userId,
-      receiver_id: receiverId,
-      content: message.trim(),
+    const res = await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trip_id: tripId, receiver_id: receiverId, content: message }),
     });
 
-    if (error) {
+    if (res.status === 429) {
+      setError(tv("rateLimited"));
+      setLoading(false);
+    } else if (!res.ok) {
       setError(t("error"));
       setLoading(false);
     } else {
@@ -83,7 +86,7 @@ export function ContactForm({ tripId, userId, receiverId, receiverName, hasConve
         onChange={(e) => setMessage(e.target.value)}
         placeholder={t("messagePlaceholder", { name: firstName })}
         rows={3}
-        required
+        maxLength={1000}
         className="input-field resize-none"
         autoFocus
       />

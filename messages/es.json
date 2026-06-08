@@ -215,7 +215,11 @@
     "activate": "Activar",
     "suspend": "Suspender",
     "delete": "Eliminar",
-    "deleteConfirm": "¿Estás seguro de que querés eliminar este usuario? Esta acción no se puede deshacer."
+    "deleteConfirm": "¿Estás seguro de que querés eliminar este usuario? Esta acción no se puede deshacer.",
+    "passengers": "Pasajeros",
+    "cancelTrip": "Cancelar",
+    "cancelTripConfirm": "¿Cancelar este viaje? Los pasajeros serán notificados.",
+    "deleteTripConfirm": "¿Eliminar este viaje? Esta acción no se puede deshacer."
   },
   "Search": {
     "origin": "Origen",
@@ -247,6 +251,22 @@
     "sentTitle": "Revisá tu bandeja de entrada",
     "sentDescription": "Te enviamos un enlace para recuperar tu contraseña. Puede tardar unos minutos.",
     "error": "Algo salió mal. Por favor intentá de nuevo."
+  },
+  "Validation": {
+    "nameTooShort": "El nombre debe tener al menos 2 caracteres",
+    "nameTooLong": "El nombre no puede superar los 100 caracteres",
+    "nameInvalid": "El nombre solo puede contener letras, espacios y guiones",
+    "phoneInvalid": "El teléfono solo puede contener números, +, - y espacios",
+    "phoneTooShort": "El número de teléfono es demasiado corto",
+    "phoneTooLong": "El número de teléfono es demasiado largo",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "passwordTooLong": "La contraseña no puede superar los 72 caracteres",
+    "messageTooLong": "El mensaje no puede superar los 1000 caracteres",
+    "commentTooLong": "El comentario no puede superar los 300 caracteres",
+    "descriptionTooLong": "La descripción no puede superar los 500 caracteres",
+    "contentInvalid": "El contenido contiene caracteres no permitidos",
+    "required": "Este campo es obligatorio",
+    "rateLimited": "Alcanzaste el límite de acciones permitidas. Intentá de nuevo más tarde."
   },
   "ResetPassword": {
     "title": "Nueva contraseña",

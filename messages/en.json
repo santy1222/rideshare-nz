@@ -215,7 +215,11 @@
     "activate": "Activate",
     "suspend": "Suspend",
     "delete": "Delete",
-    "deleteConfirm": "Are you sure you want to delete this user? This action cannot be undone."
+    "deleteConfirm": "Are you sure you want to delete this user? This action cannot be undone.",
+    "passengers": "Passengers",
+    "cancelTrip": "Cancel",
+    "cancelTripConfirm": "Cancel this trip? Passengers will be notified.",
+    "deleteTripConfirm": "Delete this trip? This action cannot be undone."
   },
   "Search": {
     "origin": "Origin",
@@ -247,6 +251,22 @@
     "sentTitle": "Check your inbox",
     "sentDescription": "We've sent a password reset link to your email. It may take a few minutes.",
     "error": "Something went wrong. Please try again."
+  },
+  "Validation": {
+    "nameTooShort": "Name must be at least 2 characters",
+    "nameTooLong": "Name must be under 100 characters",
+    "nameInvalid": "Name can only contain letters, spaces and hyphens",
+    "phoneInvalid": "Phone can only contain digits, +, - and spaces",
+    "phoneTooShort": "Phone number is too short",
+    "phoneTooLong": "Phone number is too long",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "passwordTooLong": "Password must be under 72 characters",
+    "messageTooLong": "Message must be under 1000 characters",
+    "commentTooLong": "Comment must be under 300 characters",
+    "descriptionTooLong": "Description must be under 500 characters",
+    "contentInvalid": "Content contains invalid characters",
+    "required": "This field is required",
+    "rateLimited": "You've reached the action limit. Please try again later."
   },
   "ResetPassword": {
     "title": "New password",

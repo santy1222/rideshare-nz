@@ -6,9 +6,11 @@ import { createClient } from "@/lib/supabase/client";
 import { Eye, EyeOff, Mail } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { validateName, validatePhone, validatePassword } from "@/lib/validation";
 
 export default function RegisterPage() {
   const t = useTranslations("Register");
+  const tv = useTranslations("Validation");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -22,10 +24,12 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (password.length < 6) {
-      setError(t("passwordError"));
-      return;
-    }
+    const nameErr = validateName(fullName);
+    if (nameErr) { setError(tv(nameErr as Parameters<typeof tv>[0])); return; }
+    const phoneErr = validatePhone(phone);
+    if (phoneErr) { setError(tv(phoneErr as Parameters<typeof tv>[0])); return; }
+    const passErr = validatePassword(password);
+    if (passErr) { setError(tv(passErr as Parameters<typeof tv>[0])); return; }
     setLoading(true);
 
     const { data, error: signUpError } = await supabase.auth.signUp({
@@ -97,6 +101,7 @@ export default function RegisterPage() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder={t("fullNamePlaceholder")}
+              maxLength={100}
               className="input-field"
             />
           </div>
@@ -107,6 +112,7 @@ export default function RegisterPage() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder={t("phonePlaceholder")}
+              maxLength={20}
               className="input-field"
             />
           </div>

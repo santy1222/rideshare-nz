@@ -7,6 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { validateName, validatePhone } from "@/lib/validation";
 
 interface Props {
   profile: Profile | null;
@@ -14,6 +15,7 @@ interface Props {
 
 export function ProfileEditForm({ profile }: Props) {
   const t = useTranslations("ProfileEdit");
+  const tv = useTranslations("Validation");
   const [fullName, setFullName] = useState(profile?.full_name ?? "");
   const [phone, setPhone] = useState(profile?.phone ?? "");
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url ?? null);
@@ -60,9 +62,13 @@ export function ProfileEditForm({ profile }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError("");
     setSaved(false);
+    const nameErr = validateName(fullName);
+    if (nameErr) { setError(tv(nameErr as Parameters<typeof tv>[0])); return; }
+    const phoneErr = validatePhone(phone);
+    if (phoneErr) { setError(tv(phoneErr as Parameters<typeof tv>[0])); return; }
+    setLoading(true);
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
@@ -144,6 +150,7 @@ export function ProfileEditForm({ profile }: Props) {
             required
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
+            maxLength={100}
             className="input-field text-sm"
           />
         </div>
@@ -154,6 +161,7 @@ export function ProfileEditForm({ profile }: Props) {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder={t("phonePlaceholder")}
+            maxLength={20}
             className="input-field text-sm"
           />
         </div>

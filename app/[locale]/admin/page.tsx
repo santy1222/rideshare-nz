@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Shield, Users, Car } from "lucide-react";
 import type { Profile, Trip } from "@/types";
 import { AdminActions } from "./AdminActions";
+import { AdminTripActions } from "./AdminTripActions";
 import { getTranslations } from "next-intl/server";
 
 export default async function AdminPage() {
@@ -18,10 +19,16 @@ export default async function AdminPage() {
 
   const adminSupabase = await createAdminClient();
 
-  const [{ data: profiles }, { data: trips }] = await Promise.all([
+  const [{ data: profiles }, { data: trips }, { data: bookingCounts }] = await Promise.all([
     adminSupabase.from("profiles").select("*").order("created_at", { ascending: false }),
     adminSupabase.from("trips").select("*, profiles(*)").order("created_at", { ascending: false }).limit(50),
+    adminSupabase.from("bookings").select("trip_id").eq("status", "confirmed"),
   ]);
+
+  const passengersByTrip = (bookingCounts ?? []).reduce<Record<string, number>>((acc, b) => {
+    acc[b.trip_id] = (acc[b.trip_id] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -110,7 +117,7 @@ export default async function AdminPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
-                {[t("route"), t("driver"), t("date"), t("price"), t("status")].map((h) => (
+                {[t("route"), t("driver"), t("date"), t("price"), t("status"), t("passengers"), t("actions")].map((h) => (
                   <th key={h} className="text-left py-2 px-3 font-medium text-gray-500">{h}</th>
                 ))}
               </tr>
@@ -130,6 +137,12 @@ export default async function AdminPage() {
                     }`}>
                       {trip.status === "active" ? t("active") : trip.status === "cancelled" ? t("cancelled") : t("completed")}
                     </span>
+                  </td>
+                  <td className="py-3 px-3 text-gray-500 text-center">
+                    {passengersByTrip[trip.id] ?? 0}
+                  </td>
+                  <td className="py-3 px-3">
+                    <AdminTripActions tripId={trip.id} status={trip.status} />
                   </td>
                 </tr>
               ))}

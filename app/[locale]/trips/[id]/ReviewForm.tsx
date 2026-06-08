@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Star } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { validateComment } from "@/lib/validation";
 
 interface Props {
   tripId: string;
@@ -14,6 +15,7 @@ interface Props {
 
 export function ReviewForm({ tripId, reviewedId, userId }: Props) {
   const t = useTranslations("Review");
+  const tv = useTranslations("Validation");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
@@ -29,6 +31,8 @@ export function ReviewForm({ tripId, reviewedId, userId }: Props) {
       setError(t("selectRating"));
       return;
     }
+    const commentErr = validateComment(comment);
+    if (commentErr) { setError(tv(commentErr as Parameters<typeof tv>[0])); return; }
     setLoading(true);
     setError("");
 
@@ -83,6 +87,7 @@ export function ReviewForm({ tripId, reviewedId, userId }: Props) {
           onChange={(e) => setComment(e.target.value)}
           placeholder={t("commentPlaceholder")}
           rows={2}
+          maxLength={300}
           className="input-field resize-none text-sm"
         />
         <button type="submit" disabled={loading} className="btn-primary text-sm">

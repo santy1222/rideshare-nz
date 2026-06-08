@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { MapPin, Calendar, Clock, Users, DollarSign, FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { validateDescription } from "@/lib/validation";
 
 const NZ_CITIES = [
   "Auckland", "Wellington", "Christchurch", "Hamilton", "Tauranga",
@@ -15,8 +15,8 @@ const NZ_CITIES = [
 
 export default function NewTripPage() {
   const t = useTranslations("NewTrip");
+  const tv = useTranslations("Validation");
   const router = useRouter();
-  const supabase = createClient();
 
   const [form, setForm] = useState({
     origin: "",
@@ -42,37 +42,31 @@ export default function NewTripPage() {
       setError(t("sameLocationError"));
       return;
     }
+    const descErr = validateDescription(form.description);
+    if (descErr) { setError(tv(descErr as Parameters<typeof tv>[0])); return; }
 
     setLoading(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      router.push("/login");
+
+    const res = await fetch("/api/trips", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    const json = await res.json();
+
+    if (res.status === 429) {
+      setError(tv("rateLimited"));
+      setLoading(false);
       return;
     }
-
-    const { data, error: insertError } = await supabase
-      .from("trips")
-      .insert({
-        driver_id: user.id,
-        origin: form.origin,
-        destination: form.destination,
-        departure_date: form.departure_date,
-        departure_time: form.departure_time,
-        seats_available: parseInt(form.seats_available),
-        price: form.price ? parseFloat(form.price) : null,
-        description: form.description || null,
-        status: "active",
-      })
-      .select()
-      .single();
-
-    if (insertError) {
-      setError(`${t("errorPrefix")}${insertError.message}`);
+    if (!res.ok) {
+      setError(`${t("errorPrefix")}${json.error ?? res.statusText}`);
       setLoading(false);
       return;
     }
 
-    router.push(`/trips/${data.id}`);
+    router.push(`/trips/${json.id}`);
   }
 
   return (
@@ -183,6 +177,7 @@ export default function NewTripPage() {
               onChange={(e) => update("description", e.target.value)}
               placeholder={t("descriptionPlaceholder")}
               rows={3}
+              maxLength={500}
               className="input-field resize-none"
             />
           </div>

@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "@/i18n/navigation";
 import { ArrowLeft, Send } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import { validateMessage } from "@/lib/validation";
+
 
 interface Message {
   id: string;
@@ -20,6 +22,7 @@ interface PageProps {
 
 export default function ConversationPage({ params }: PageProps) {
   const t = useTranslations("Thread");
+  const tv = useTranslations("Validation");
   const locale = useLocale();
   const [tripId, setTripId] = useState("");
   const [otherId, setOtherId] = useState("");
@@ -91,18 +94,21 @@ export default function ConversationPage({ params }: PageProps) {
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
-    if (!newMessage.trim() || !currentUserId) return;
+    if (!currentUserId || validateMessage(newMessage)) return;
     setSending(true);
 
-    await supabase.from("messages").insert({
-      trip_id: tripId,
-      sender_id: currentUserId,
-      receiver_id: otherId,
-      content: newMessage.trim(),
+    const res = await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trip_id: tripId, receiver_id: otherId, content: newMessage }),
     });
 
-    setNewMessage("");
-    await loadMessages(currentUserId);
+    if (res.status === 429) {
+      alert(tv("rateLimited"));
+    } else if (res.ok) {
+      setNewMessage("");
+      await loadMessages(currentUserId);
+    }
     setSending(false);
   }
 
@@ -162,6 +168,7 @@ export default function ConversationPage({ params }: PageProps) {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder={t("placeholder")}
+          maxLength={1000}
           className="input-field flex-1"
         />
         <button
