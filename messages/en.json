@@ -115,6 +115,7 @@
     "destinationPlaceholder": "Select city",
     "departureDate": "Departure date",
     "departureTime": "Departure time",
+    "departureTimePlaceholder": "Select time",
     "seats": "Available seats",
     "price": "Price per person (NZD)",
     "pricePlaceholder": "Leave empty to arrange",

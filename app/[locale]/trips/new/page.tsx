@@ -7,6 +7,13 @@ import { useTranslations } from "next-intl";
 import { validateDescription } from "@/lib/validation";
 import { NZ_CITIES } from "@/lib/cities";
 
+// Horarios cada 15 minutos: "00:00", "00:15", ... "23:45".
+const TIME_SLOTS = Array.from({ length: 24 * 4 }, (_, i) => {
+  const h = String(Math.floor(i / 4)).padStart(2, "0");
+  const m = String((i % 4) * 15).padStart(2, "0");
+  return `${h}:${m}`;
+});
+
 export default function NewTripPage() {
   const t = useTranslations("NewTrip");
   const tv = useTranslations("Validation");
@@ -121,13 +128,15 @@ export default function NewTripPage() {
                 <Clock size={14} className="text-gray-400" />
                 {t("departureTime")} <span className="text-red-400">*</span>
               </label>
-              <input
-                type="time"
+              <select
                 required
                 value={form.departure_time}
                 onChange={(e) => update("departure_time", e.target.value)}
                 className="input-field"
-              />
+              >
+                <option value="">{t("departureTimePlaceholder")}</option>
+                {TIME_SLOTS.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
             </div>
           </div>
 
