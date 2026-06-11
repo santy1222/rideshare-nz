@@ -17,10 +17,15 @@ const config: Config = {
           700: "#0F6E56",
           900: "#04342C",
         },
+        cream: {
+          50:  "#FFFCF4", // superficies (tarjetas, navbar) — blanco cálido
+          100: "#F7F0E1", // fondo de página — crema visible
+          200: "#EDE3CE", // inputs / hover / bordes suaves
+        },
       },
       fontFamily: {
-        sans: ["DM Sans", "sans-serif"],
-        display: ["Sora", "sans-serif"],
+        sans: ["var(--font-nunito)", "sans-serif"],
+        display: ["var(--font-nunito)", "sans-serif"],
       },
     },
   },

@@ -38,7 +38,7 @@ export default async function NotificationsPage() {
             <Link
               key={n.id}
               href={n.trip_id ? `/trips/${n.trip_id}` : "/notifications"}
-              className="flex items-start gap-3 bg-white border border-gray-100 rounded-xl p-4 hover:border-brand-100 transition-colors"
+              className="flex items-start gap-3 bg-cream-50 border border-gray-100 rounded-xl p-4 hover:border-brand-100 transition-colors"
             >
               <div className="w-9 h-9 rounded-full bg-brand-50 flex items-center justify-center shrink-0 mt-0.5">
                 <Users size={16} className="text-brand-500" />

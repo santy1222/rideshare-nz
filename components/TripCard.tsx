@@ -23,7 +23,7 @@ export function TripCard({ trip }: Props) {
 
   return (
     <Link href={`/trips/${trip.id}`}>
-      <div className={`bg-white border rounded-xl p-4 hover:border-brand-200 hover:-translate-y-0.5 transition-all cursor-pointer ${isFull ? "opacity-60 border-gray-100" : "border-gray-100"}`}>
+      <div className={`bg-cream-50 border rounded-xl p-4 hover:border-brand-200 hover:-translate-y-0.5 transition-all cursor-pointer ${isFull ? "opacity-60 border-gray-100" : "border-gray-100"}`}>
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <span className="font-display font-semibold text-lg text-gray-900 truncate">{trip.origin}</span>

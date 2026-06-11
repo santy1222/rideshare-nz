@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { CityAutocomplete } from "@/components/CityAutocomplete";
 
 export function SearchForm() {
   const t = useTranslations("Search");
@@ -37,22 +38,20 @@ export function SearchForm() {
     <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-100 p-3 max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-4 gap-2">
       <div className="flex flex-col">
         <label className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1 px-1">{t("origin")}</label>
-        <input
-          type="text"
+        <CityAutocomplete
           value={origin}
-          onChange={(e) => setOrigin(e.target.value)}
+          onChange={setOrigin}
           placeholder={t("originPlaceholder")}
-          className="input-field"
+          inputClassName="bg-gray-50"
         />
       </div>
       <div className="flex flex-col">
         <label className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1 px-1">{t("destination")}</label>
-        <input
-          type="text"
+        <CityAutocomplete
           value={destination}
-          onChange={(e) => setDestination(e.target.value)}
+          onChange={setDestination}
           placeholder={t("destinationPlaceholder")}
-          className="input-field"
+          inputClassName="bg-gray-50"
         />
       </div>
       <div className="flex flex-col">
@@ -61,7 +60,7 @@ export function SearchForm() {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="input-field"
+          className="input-field bg-gray-50"
         />
       </div>
       <div className="flex gap-2 sm:mt-auto">

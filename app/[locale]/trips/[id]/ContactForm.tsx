@@ -65,7 +65,7 @@ export function ContactForm({ tripId, userId, receiverId, receiverName, hasConve
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full py-2.5 border border-gray-200 text-gray-600 hover:bg-gray-50 font-medium rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
+        className="w-full py-2.5 border border-gray-200 text-gray-600 hover:bg-cream-100 font-medium rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
       >
         <MessageCircle size={15} />
         {t("title")}

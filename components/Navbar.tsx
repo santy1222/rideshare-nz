@@ -92,7 +92,7 @@ export function Navbar() {
   );
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-cream-50 border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/">
           <Image src="/logo.svg" alt="RideShare NZ" height={36} width={160} className="object-contain" priority />
@@ -111,7 +111,7 @@ export function Navbar() {
               <Link href="/trips/new" className="text-sm px-4 py-1.5 bg-brand-500 text-white rounded-lg font-medium hover:bg-brand-700 transition-colors">
                 {t("publishTrip")}
               </Link>
-              <Link href="/messages" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+              <Link href="/messages" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-cream-100 transition-colors flex items-center gap-1.5">
                 <MessageCircle size={14} />
                 {t("messages")}
                 {unreadCount > 0 && (
@@ -120,7 +120,7 @@ export function Navbar() {
                   </span>
                 )}
               </Link>
-              <Link href="/notifications" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+              <Link href="/notifications" className="relative text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-cream-100 transition-colors flex items-center gap-1.5">
                 <Bell size={14} />
                 {t("notifications")}
                 {notifCount > 0 && (
@@ -129,7 +129,7 @@ export function Navbar() {
                   </span>
                 )}
               </Link>
-              <Link href="/profile" className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <Link href="/profile" className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-cream-100 transition-colors">
                 {profile?.full_name?.split(" ")[0] ?? t("myProfile")}
               </Link>
               {profile?.role === "admin" && (
@@ -144,7 +144,7 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <Link href="/login" className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-cream-100 transition-colors">
                 {t("signIn")}
               </Link>
               <Link href="/register" className="text-sm px-4 py-1.5 bg-brand-500 text-white rounded-lg font-medium hover:bg-brand-700 transition-colors">
@@ -165,7 +165,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 py-2 flex flex-col">
+        <div className="md:hidden bg-cream-50 border-t border-gray-100 px-4 py-2 flex flex-col">
           <div className="py-3 border-b border-gray-50">
             <LangToggle />
           </div>

@@ -1,6 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import { Nunito } from "next/font/google";
 import "../globals.css";
 import "flag-icons/css/flag-icons.min.css";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-nunito",
+  display: "swap",
+});
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -42,7 +50,7 @@ export default async function LocaleLayout({
   const t = await getTranslations({ locale, namespace: "Footer" });
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={nunito.variable}>
       <body>
         <NextIntlClientProvider messages={messages}>
           <Navbar />

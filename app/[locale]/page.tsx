@@ -31,9 +31,9 @@ export default async function HomePage({ searchParams }: PageProps) {
   const isSearching = params.origin || params.destination || params.date;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cream-100">
       <div className="bg-gradient-to-br from-brand-50 to-brand-100 px-4 py-8 sm:py-12 text-center">
-        <div className="inline-flex items-center gap-1.5 text-xs text-brand-700 bg-white border border-brand-100 rounded-full px-3 py-1 mb-4">
+        <div className="inline-flex items-center gap-1.5 text-xs text-brand-700 bg-cream-50 border border-brand-100 rounded-full px-3 py-1 mb-4">
           🌿 {t("ecoTagline")}
         </div>
         <h1 className="font-display font-semibold text-2xl sm:text-3xl text-brand-900 mb-5 sm:mb-6 leading-tight px-2">
@@ -44,7 +44,7 @@ export default async function HomePage({ searchParams }: PageProps) {
         </Suspense>
       </div>
 
-      <div className="bg-white border-b border-gray-100 py-2.5 px-4">
+      <div className="bg-cream-50 border-b border-gray-100 py-2.5 px-4">
         <div className="max-w-5xl mx-auto flex items-center justify-center gap-6 text-sm text-gray-400">
           <span>🚗 <strong className="text-gray-700">{t("tripsCount", { count: trips?.length ?? 0 })}</strong></span>
           <span>🇳🇿 <strong className="text-gray-700">{t("newZealand")}</strong></span>
@@ -79,7 +79,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
         )}
 
-        <div className="mt-6 bg-white border border-gray-100 rounded-xl p-5 flex items-center justify-between gap-4">
+        <div className="mt-6 bg-cream-50 border border-gray-100 rounded-xl p-5 flex items-center justify-between gap-4">
           <div>
             <h3 className="font-display font-semibold text-sm text-gray-900 mb-1">{t("travelingSoon")}</h3>
             <p className="text-xs text-gray-400">{t("publishCta")}</p>

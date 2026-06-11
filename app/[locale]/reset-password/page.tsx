@@ -36,7 +36,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <div className="bg-white border border-gray-100 rounded-2xl p-8 w-full max-w-sm">
+      <div className="bg-cream-50 border border-gray-100 rounded-2xl p-8 w-full max-w-sm">
         <Link href="/" className="flex justify-center mb-6">
           <Image src="/logo.svg" alt="RideShare NZ" height={40} width={160} className="object-contain" />
         </Link>

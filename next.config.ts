@@ -17,6 +17,8 @@ const cspHeader = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  // Permite acceder al dev server desde 127.0.0.1 (evita bloqueo de recursos de desarrollo).
+  allowedDevOrigins: ["127.0.0.1"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "*.supabase.co" },

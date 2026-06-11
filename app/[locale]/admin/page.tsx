@@ -72,7 +72,7 @@ export default async function AdminPage() {
             </thead>
             <tbody>
               {(profiles as Profile[])?.map((profile) => (
-                <tr key={profile.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                <tr key={profile.id} className="border-b border-gray-50 hover:bg-cream-100 transition-colors">
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-2">
                       <div className="w-7 h-7 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xs">
@@ -124,7 +124,7 @@ export default async function AdminPage() {
             </thead>
             <tbody>
               {(trips as (Trip & { profiles: Profile })[])?.map((trip) => (
-                <tr key={trip.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                <tr key={trip.id} className="border-b border-gray-50 hover:bg-cream-100 transition-colors">
                   <td className="py-3 px-3 font-medium text-gray-800">{trip.origin} → {trip.destination}</td>
                   <td className="py-3 px-3 text-gray-600">{trip.profiles?.full_name ?? "—"}</td>
                   <td className="py-3 px-3 text-gray-500">{format(new Date(trip.departure_date), "dd/MM/yy")} {trip.departure_time.slice(0, 5)}</td>

@@ -84,7 +84,7 @@ export default async function ProfilePage() {
               <a
                 key={trip.id}
                 href={`/trips/${trip.id}`}
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100"
+                className="flex items-center justify-between p-3 rounded-xl hover:bg-cream-100 transition-colors border border-gray-100"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 text-sm font-medium text-gray-700">

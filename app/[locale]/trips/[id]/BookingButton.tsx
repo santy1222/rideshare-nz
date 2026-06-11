@@ -66,7 +66,7 @@ export function BookingButton({
 
   if (isFull) {
     return (
-      <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+      <div className="bg-cream-100 border border-gray-100 rounded-xl p-4 text-center">
         <p className="text-gray-500 text-sm font-medium">{t("tripFull")}</p>
         <p className="text-xs text-gray-400 mt-0.5">{t("noSeats")}</p>
       </div>

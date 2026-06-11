@@ -5,13 +5,7 @@ import { useRouter } from "@/i18n/navigation";
 import { MapPin, Calendar, Clock, Users, DollarSign, FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { validateDescription } from "@/lib/validation";
-
-const NZ_CITIES = [
-  "Auckland", "Wellington", "Christchurch", "Hamilton", "Tauranga",
-  "Napier-Hastings", "Dunedin", "Palmerston North", "Nelson", "Rotorua",
-  "New Plymouth", "Whangarei", "Invercargill", "Whanganui", "Gisborne",
-  "Queenstown", "Timaru", "Blenheim", "Masterton", "Levin",
-];
+import { NZ_CITIES } from "@/lib/cities";
 
 export default function NewTripPage() {
   const t = useTranslations("NewTrip");

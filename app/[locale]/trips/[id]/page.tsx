@@ -97,7 +97,7 @@ export default async function TripDetailPage({ params }: PageProps) {
         </div>
 
         {trip.description && (
-          <div className="bg-gray-50 rounded-xl p-4 mb-6">
+          <div className="bg-cream-100 rounded-xl p-4 mb-6">
             <p className="text-gray-600 text-sm leading-relaxed">{trip.description}</p>
           </div>
         )}
@@ -176,7 +176,7 @@ export default async function TripDetailPage({ params }: PageProps) {
             {user ? (
               <div className="space-y-2">
                 {(passengers as (Booking & { passenger: Pick<Profile, "full_name" | "phone" | "avatar_url"> })[]).map((b) => (
-                  <div key={b.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                  <div key={b.id} className="flex items-center justify-between p-3 bg-cream-100 rounded-xl">
                     <div className="flex items-center gap-2">
                       <Avatar name={b.passenger?.full_name ?? "?"} avatarUrl={b.passenger?.avatar_url} size="xs" />
                       <span className="text-sm font-medium text-gray-700">{b.passenger?.full_name}</span>
@@ -191,7 +191,7 @@ export default async function TripDetailPage({ params }: PageProps) {
                 ))}
               </div>
             ) : (
-              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl text-sm text-gray-500">
+              <div className="flex items-center gap-2 p-3 bg-cream-100 rounded-xl text-sm text-gray-500">
                 <Users size={15} className="text-brand-500" />
                 {t("passengersJoined", { count: passengers.length })}
               </div>

@@ -59,7 +59,7 @@ export default function RegisterPage() {
   if (registered) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
-        <div className="bg-white border border-gray-100 rounded-2xl p-8 w-full max-w-sm text-center">
+        <div className="bg-cream-50 border border-gray-100 rounded-2xl p-8 w-full max-w-sm text-center">
           <div className="w-16 h-16 rounded-full bg-brand-50 flex items-center justify-center mx-auto mb-5">
             <Mail size={28} className="text-brand-500" />
           </div>
@@ -80,7 +80,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
-      <div className="bg-white border border-gray-100 rounded-2xl p-8 w-full max-w-sm">
+      <div className="bg-cream-50 border border-gray-100 rounded-2xl p-8 w-full max-w-sm">
         <Link href="/" className="flex justify-center mb-6">
           <Image src="/logo.svg" alt="RideShare NZ" height={40} width={160} className="object-contain" />
         </Link>
