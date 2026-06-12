@@ -147,7 +147,6 @@ export default async function TripDetailPage({ params }: PageProps) {
               <>
                 <BookingButton
                   tripId={trip.id}
-                  userId={user.id}
                   hasBooked={!!booking}
                   isFull={trip.seats_available === 0}
                   seatsAvailable={trip.seats_available}

@@ -1,4 +1,5 @@
 import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { sendEmail, escapeHtml } from "@/lib/email";
 import { checkMessageLimit } from "@/lib/rate-limit";
 import { validateMessage } from "@/lib/validation";
 import { NextResponse } from "next/server";
@@ -48,5 +49,43 @@ export async function POST(req: Request) {
   });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+  // Aviso al receptor (notificación in-app + email) SIN el contenido del mensaje.
+  // Dedupe: si ya tiene un aviso sin leer de este viaje, no se repite — evita
+  // un email por cada mensaje en una conversación activa.
+  const { data: pendingNotifs } = await adminSupabase
+    .from("notifications")
+    .select("id")
+    .eq("user_id", receiver_id)
+    .eq("trip_id", trip_id)
+    .eq("type", "message_received")
+    .eq("read", false)
+    .limit(1);
+
+  if (!pendingNotifs?.length) {
+    const [{ data: sender }, { data: receiverUser }] = await Promise.all([
+      adminSupabase.from("profiles").select("full_name").eq("id", user.id).single(),
+      adminSupabase.auth.admin.getUserById(receiver_id),
+    ]);
+    const senderName = sender?.full_name ?? "Someone";
+
+    await adminSupabase.from("notifications").insert({
+      user_id: receiver_id,
+      trip_id,
+      type: "message_received",
+      message: `New message from ${senderName}`,
+    });
+
+    const receiverEmail = receiverUser?.user?.email;
+    if (receiverEmail) {
+      await sendEmail(
+        receiverEmail,
+        "You have a new message",
+        `<p><strong>${escapeHtml(senderName)}</strong> sent you a message on RideShare NZ.</p>
+         <p>Log in to read it.</p>`
+      );
+    }
+  }
+
   return NextResponse.json({ ok: true, remaining });
 }

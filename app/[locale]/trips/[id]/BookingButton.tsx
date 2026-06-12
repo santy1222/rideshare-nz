@@ -1,21 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "@/i18n/navigation";
 import { Users, CheckCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface Props {
   tripId: string;
-  userId: string;
   hasBooked: boolean;
   isFull: boolean;
   seatsAvailable: number;
 }
 
 export function BookingButton({
-  tripId, userId,
+  tripId,
   hasBooked: initialBooked, isFull, seatsAvailable,
 }: Props) {
   const t = useTranslations("Booking");
@@ -23,23 +21,23 @@ export function BookingButton({
   const [booked, setBooked] = useState(initialBooked);
   const [error, setError] = useState("");
   const router = useRouter();
-  const supabase = createClient();
 
   async function handleBook() {
     setLoading(true);
     setError("");
 
-    const { error: bookingError } = await supabase
-      .from("bookings")
-      .upsert(
-        { trip_id: tripId, passenger_id: userId, status: "confirmed" },
-        { onConflict: "trip_id,passenger_id" }
-      );
+    // La reserva se crea vía API: valida, y avisa al conductor por email.
+    // La notificación in-app la genera el trigger after_booking_notify en la DB.
+    const res = await fetch("/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trip_id: tripId }),
+    });
 
-    if (bookingError) {
-      setError(bookingError.message || t("error"));
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      setError(data?.error || t("error"));
     } else {
-      // La notificación al conductor la genera el trigger after_booking_notify en la DB.
       setBooked(true);
       router.refresh();
     }
