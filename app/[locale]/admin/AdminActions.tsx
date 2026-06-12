@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -14,11 +13,14 @@ export function AdminActions({ userId, suspended }: Props) {
   const t = useTranslations("Admin");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   async function toggleSuspend() {
     setLoading(true);
-    await supabase.from("profiles").update({ suspended: !suspended }).eq("id", userId);
+    await fetch(`/api/admin/users/${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ suspended: !suspended }),
+    });
     router.refresh();
     setLoading(false);
   }
@@ -26,7 +28,7 @@ export function AdminActions({ userId, suspended }: Props) {
   async function deleteUser() {
     if (!confirm(t("deleteConfirm"))) return;
     setLoading(true);
-    await supabase.from("profiles").delete().eq("id", userId);
+    await fetch(`/api/admin/users/${userId}`, { method: "DELETE" });
     router.refresh();
     setLoading(false);
   }

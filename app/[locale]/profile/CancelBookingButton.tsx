@@ -8,14 +8,10 @@ import { useTranslations } from "next-intl";
 
 interface Props {
   bookingId: string;
-  driverId: string;
-  tripRoute: string;
-  passengerName: string;
 }
 
-export function CancelBookingButton({ bookingId, driverId, tripRoute, passengerName }: Props) {
+export function CancelBookingButton({ bookingId }: Props) {
   const t = useTranslations("CancelBooking");
-  const tNotif = useTranslations("CancelBookingNotif");
   const [confirming, setConfirming] = useState(false);
   const [loading, setLoading] = useState(false);
   const supabase = createClient();
@@ -24,21 +20,11 @@ export function CancelBookingButton({ bookingId, driverId, tripRoute, passengerN
   async function handleCancel() {
     setLoading(true);
 
-    const { data: booking } = await supabase
+    // La notificación al conductor la genera el trigger after_booking_notify en la DB.
+    await supabase
       .from("bookings")
       .update({ status: "cancelled" })
-      .eq("id", bookingId)
-      .select("trip_id")
-      .single();
-
-    if (booking) {
-      await supabase.from("notifications").insert({
-        user_id: driverId,
-        type: "booking_cancelled",
-        message: tNotif("message", { name: passengerName, route: tripRoute }),
-        trip_id: booking.trip_id,
-      });
-    }
+      .eq("id", bookingId);
 
     router.refresh();
   }

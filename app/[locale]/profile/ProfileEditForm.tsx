@@ -75,7 +75,7 @@ export function ProfileEditForm({ profile }: Props) {
 
     const { error: updateError } = await supabase
       .from("profiles")
-      .upsert({ id: user.id, full_name: fullName, phone: phone || null, role: "user" });
+      .upsert({ id: user.id, full_name: fullName, phone: phone || null });
 
     if (updateError) {
       setError(`Error: ${updateError.message}`);

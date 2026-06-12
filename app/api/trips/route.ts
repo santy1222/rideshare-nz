@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { checkTripLimit } from "@/lib/rate-limit";
 import { validateDescription } from "@/lib/validation";
 import { NextResponse } from "next/server";
@@ -44,7 +44,10 @@ export async function POST(req: Request) {
   const { allowed } = await checkTripLimit(user.id);
   if (!allowed) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
 
-  const { data, error } = await supabase
+  // RLS ya no permite inserts directos en trips: solo esta ruta puede crear
+  // viajes (con la service key) después de validar y aplicar el rate limit.
+  const adminSupabase = await createAdminClient();
+  const { data, error } = await adminSupabase
     .from("trips")
     .insert({
       driver_id: user.id,

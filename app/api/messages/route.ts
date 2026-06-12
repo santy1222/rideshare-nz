@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { checkMessageLimit } from "@/lib/rate-limit";
 import { validateMessage } from "@/lib/validation";
 import { NextResponse } from "next/server";
@@ -20,10 +20,27 @@ export async function POST(req: Request) {
   const validationKey = validateMessage(content);
   if (validationKey) return NextResponse.json({ error: validationKey }, { status: 422 });
 
+  // Solo participantes del viaje: el conductor puede escribirle a sus pasajeros
+  // confirmados, y cualquier usuario puede escribirle al conductor del viaje.
+  const adminSupabase = await createAdminClient();
+  const { data: trip } = await adminSupabase.from("trips").select("driver_id").eq("id", trip_id).single();
+  if (!trip) return NextResponse.json({ error: "Trip not found" }, { status: 404 });
+
+  if (receiver_id === user.id) {
+    return NextResponse.json({ error: "Invalid receiver" }, { status: 422 });
+  }
+  if (user.id === trip.driver_id) {
+    const { data: bookingExists } = await adminSupabase
+      .from("bookings").select("id").eq("trip_id", trip_id).eq("passenger_id", receiver_id).maybeSingle();
+    if (!bookingExists) return NextResponse.json({ error: "Invalid receiver" }, { status: 422 });
+  } else if (receiver_id !== trip.driver_id) {
+    return NextResponse.json({ error: "Invalid receiver" }, { status: 422 });
+  }
+
   const { allowed, remaining } = await checkMessageLimit(user.id);
   if (!allowed) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
 
-  const { error } = await supabase.from("messages").insert({
+  const { error } = await adminSupabase.from("messages").insert({
     trip_id,
     sender_id: user.id,
     receiver_id,

@@ -95,7 +95,7 @@ export function Navbar() {
     <nav className="bg-cream-50 border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/">
-          <Image src="/logo.svg" alt="RideShare NZ" height={36} width={160} className="object-contain" priority />
+          <Image src="/logo.png" alt="RideShare NZ" height={44} width={178} className="object-contain" priority />
         </Link>
 
         {/* Desktop */}

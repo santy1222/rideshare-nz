@@ -9,16 +9,13 @@ import { useTranslations } from "next-intl";
 interface Props {
   tripId: string;
   userId: string;
-  driverId: string;
-  passengerName: string;
-  tripRoute: string;
   hasBooked: boolean;
   isFull: boolean;
   seatsAvailable: number;
 }
 
 export function BookingButton({
-  tripId, userId, driverId, passengerName, tripRoute,
+  tripId, userId,
   hasBooked: initialBooked, isFull, seatsAvailable,
 }: Props) {
   const t = useTranslations("Booking");
@@ -42,10 +39,7 @@ export function BookingButton({
     if (bookingError) {
       setError(bookingError.message || t("error"));
     } else {
-      await supabase
-        .from("notifications")
-        .insert({ user_id: driverId, type: "booking_joined", message: t("notificationJoined", { name: passengerName, route: tripRoute }), trip_id: tripId });
-
+      // La notificación al conductor la genera el trigger after_booking_notify en la DB.
       setBooked(true);
       router.refresh();
     }

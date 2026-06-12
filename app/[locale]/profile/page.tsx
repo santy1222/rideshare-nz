@@ -149,12 +149,7 @@ export default async function ProfilePage() {
                   </div>
                 </Link>
                 {b.trip.status === "active" && (
-                  <CancelBookingButton
-                    bookingId={b.id}
-                    driverId={b.trip.driver_id}
-                    tripRoute={`${b.trip.origin} → ${b.trip.destination}`}
-                    passengerName={profile?.full_name ?? ""}
-                  />
+                  <CancelBookingButton bookingId={b.id} />
                 )}
               </div>
             ))}

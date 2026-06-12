@@ -59,10 +59,10 @@ export default async function LocaleLayout({
             <div className="max-w-6xl mx-auto px-4 text-center">
               <div className="flex items-center justify-center mb-3">
                 <Image
-                  src="/logo.svg"
+                  src="/logo.png"
                   alt="RideShare NZ"
-                  height={32}
-                  width={140}
+                  height={36}
+                  width={146}
                   className="object-contain brightness-0 invert opacity-80"
                 />
               </div>

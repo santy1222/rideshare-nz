@@ -18,26 +18,29 @@ export default async function TripDetailPage({ params }: PageProps) {
   const supabase = await createClient();
   const t = await getTranslations("TripDetail");
 
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Columnas explícitas: el grant de SELECT sobre profiles para anon no incluye phone.
+  // El teléfono del conductor se busca aparte solo con sesión iniciada.
   const { data: trip } = await supabase
     .from("trips")
-    .select("*, profiles(*)")
+    .select("*, profiles(id, full_name, avatar_url, avg_rating, total_reviews)")
     .eq("id", id)
     .single();
 
   if (!trip) notFound();
 
-  const { data: { user } } = await supabase.auth.getUser();
-
-  const [{ data: reviews }, { data: booking }, { data: existingMessage }, { data: passengers }, { data: userProfile }] =
+  const [{ data: reviews }, { data: booking }, { data: existingMessage }, { data: passengers }, { data: driverContact }] =
     await Promise.all([
-      supabase.from("reviews").select("*, reviewer:profiles!reviewer_id(*)").eq("reviewed_id", trip.driver_id).order("created_at", { ascending: false }).limit(5),
+      supabase.from("reviews").select("*, reviewer:profiles!reviewer_id(id, full_name, avatar_url)").eq("reviewed_id", trip.driver_id).order("created_at", { ascending: false }).limit(5),
       user ? supabase.from("bookings").select("id").eq("trip_id", id).eq("passenger_id", user.id).eq("status", "confirmed").maybeSingle() : Promise.resolve({ data: null }),
       user ? supabase.from("messages").select("id").eq("trip_id", id).or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`).limit(1).maybeSingle() : Promise.resolve({ data: null }),
-      supabase.from("bookings").select("*, passenger:profiles!passenger_id(full_name, phone, avatar_url)").eq("trip_id", id).eq("status", "confirmed"),
-      user ? supabase.from("profiles").select("full_name").eq("id", user.id).single() : Promise.resolve({ data: null }),
+      // Para anónimos RLS devuelve la lista vacía; se omite la query porque su grant no incluye phone.
+      user ? supabase.from("bookings").select("*, passenger:profiles!passenger_id(full_name, avatar_url, phone)").eq("trip_id", id).eq("status", "confirmed") : Promise.resolve({ data: [] }),
+      user ? supabase.from("profiles").select("phone").eq("id", trip.driver_id).single() : Promise.resolve({ data: null }),
     ]);
 
-  const driver = trip.profiles;
+  const driver = { ...trip.profiles, phone: driverContact?.phone ?? null };
   const isOwner = user?.id === trip.driver_id;
 
   const dateStr = new Date(trip.departure_date).toLocaleDateString(
@@ -145,9 +148,6 @@ export default async function TripDetailPage({ params }: PageProps) {
                 <BookingButton
                   tripId={trip.id}
                   userId={user.id}
-                  driverId={trip.driver_id}
-                  passengerName={userProfile?.full_name ?? ""}
-                  tripRoute={`${trip.origin} → ${trip.destination}`}
                   hasBooked={!!booking}
                   isFull={trip.seats_available === 0}
                   seatsAvailable={trip.seats_available}

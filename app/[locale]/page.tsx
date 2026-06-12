@@ -17,7 +17,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   let query = supabase
     .from("trips")
-    .select("*, profiles(*)")
+    .select("*, profiles(id, full_name, avatar_url, avg_rating, total_reviews)")
     .eq("status", "active")
     .order("departure_date", { ascending: true });
 
