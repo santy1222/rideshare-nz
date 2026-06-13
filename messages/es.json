@@ -15,7 +15,9 @@
     "register": "Registrarse"
   },
   "Footer": {
-    "tagline": "Conectando viajeros en Nueva Zelanda"
+    "tagline": "Conectando viajeros en Nueva Zelanda",
+    "userGuide": "Cómo usar el sitio",
+    "contact": "Contacto"
   },
   "Home": {
     "ecoTagline": "Ahorrá dinero, cuidá el planeta",
@@ -30,6 +32,31 @@
     "whyNotYours": "¿Por qué no publicás el tuyo?",
     "travelingSoon": "¿Viajás pronto?",
     "publishCta": "Publicá tu viaje y compartí gastos con otros"
+  },
+  "Guide": {
+    "title": "Cómo usar RideShare NZ",
+    "subtitle": "Una guía rápida para encontrar un viaje o publicar el tuyo — te lleva un minuto.",
+    "searchTitle": "Buscar un viaje",
+    "searchStep1": "En la página principal, escribí tu ciudad de salida en Origen y a dónde vas en Destino.",
+    "searchStep2": "Opcionalmente elegí una Fecha y tocá Buscar.",
+    "searchStep3": "Mirá los resultados. Cada tarjeta muestra el conductor, el horario, los asientos disponibles y el precio.",
+    "joinTitle": "Unirte a un viaje",
+    "joinStep1": "Tocá un viaje para abrir los detalles y ver el perfil y las reseñas del conductor.",
+    "joinStep2": "Iniciá sesión o creá una cuenta gratis (te lleva menos de 2 minutos).",
+    "joinStep3": "Tocá Unirme al viaje para reservar tu lugar — el conductor recibe la notificación al instante.",
+    "joinStep4": "Usá Enviar mensaje o el WhatsApp del conductor para coordinar el punto de encuentro y la hora.",
+    "postTitle": "Publicar tu propio viaje",
+    "postStep1": "Iniciá sesión y tocá + Publicar viaje arriba o en la página principal.",
+    "postStep2": "Elegí origen, destino, fecha, hora, asientos disponibles y un precio opcional.",
+    "postStep3": "Publicalo. Otros viajeros ya pueden encontrarlo y unirse a tu viaje.",
+    "tipsTitle": "Consejos para un buen viaje",
+    "tip1": "Completá tu perfil y agregá una foto — genera confianza con los demás viajeros.",
+    "tip2": "Coordiná el punto de encuentro y la forma de pago antes de empezar el viaje.",
+    "tip3": "Dejá una reseña después del viaje para ayudar al resto de la comunidad.",
+    "ctaText": "¿Listo para salir?",
+    "ctaSearch": "Buscar un viaje",
+    "ctaPost": "Publicar un viaje",
+    "backHome": "Volver al inicio"
   },
   "NotFound": {
     "title": "Página no encontrada",

@@ -32,16 +32,27 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-cream-100">
-      <div className="bg-gradient-to-br from-brand-50 to-brand-100 px-4 py-8 sm:py-12 text-center">
-        <div className="inline-flex items-center gap-1.5 text-xs text-brand-700 bg-cream-50 border border-brand-100 rounded-full px-3 py-1 mb-4">
-          🌿 {t("ecoTagline")}
+      <div className="relative overflow-hidden px-4 py-12 sm:py-20 text-center">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 scale-105 bg-cover bg-center blur-[1.5px]"
+          style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-cream-50/65 via-cream-50/45 to-brand-100/70"
+        />
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-1.5 text-xs text-brand-700 bg-cream-50/90 border border-brand-100 rounded-full px-3 py-1 mb-4 backdrop-blur-sm">
+            🌿 {t("ecoTagline")}
+          </div>
+          <h1 className="font-display font-semibold text-2xl sm:text-3xl text-brand-900 mb-5 sm:mb-6 leading-tight px-2 [text-shadow:0_1px_8px_rgba(255,255,255,0.6)]">
+            {t("subtitle")}
+          </h1>
+          <Suspense>
+            <SearchForm />
+          </Suspense>
         </div>
-        <h1 className="font-display font-semibold text-2xl sm:text-3xl text-brand-900 mb-5 sm:mb-6 leading-tight px-2">
-          {t("subtitle")}
-        </h1>
-        <Suspense>
-          <SearchForm />
-        </Suspense>
       </div>
 
       <div className="bg-cream-50 border-b border-gray-100 py-2.5 px-4">
@@ -79,10 +90,22 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
         )}
 
-        <div className="mt-6 bg-cream-50 border border-gray-100 rounded-xl p-5 flex items-center justify-between gap-4">
+      </div>
+
+      <div className="relative overflow-hidden px-4 py-16 sm:py-24">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 scale-105 bg-cover bg-center blur-[1.5px]"
+          style={{ backgroundImage: "url('/footer-bg.jpg')" }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-cream-100/70 via-cream-50/45 to-brand-100/70"
+        />
+        <div className="relative z-10 max-w-2xl mx-auto bg-cream-50/90 border border-cream-100 rounded-xl p-5 flex items-center justify-between gap-4 backdrop-blur-sm shadow-sm">
           <div>
             <h3 className="font-display font-semibold text-sm text-gray-900 mb-1">{t("travelingSoon")}</h3>
-            <p className="text-xs text-gray-400">{t("publishCta")}</p>
+            <p className="text-xs text-gray-500">{t("publishCta")}</p>
           </div>
           <Link
             href={user ? "/trips/new" : "/register"}

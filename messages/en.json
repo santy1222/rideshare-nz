@@ -15,7 +15,9 @@
     "register": "Register"
   },
   "Footer": {
-    "tagline": "Connecting travellers across New Zealand"
+    "tagline": "Connecting travellers across New Zealand",
+    "userGuide": "How to use the site",
+    "contact": "Contact"
   },
   "Home": {
     "ecoTagline": "Save money, protect the planet",
@@ -30,6 +32,31 @@
     "whyNotYours": "Why not post yours?",
     "travelingSoon": "Travelling soon?",
     "publishCta": "Post your trip and share the costs with others"
+  },
+  "Guide": {
+    "title": "How to use RideShare NZ",
+    "subtitle": "A quick guide to find a ride or post your own — it only takes a minute.",
+    "searchTitle": "Find a ride",
+    "searchStep1": "On the home page, type your departure city in Origin and where you're going in Destination.",
+    "searchStep2": "Optionally choose a Date, then tap Search.",
+    "searchStep3": "Browse the results. Each card shows the driver, time, available seats and the price.",
+    "joinTitle": "Join a trip",
+    "joinStep1": "Tap a trip to open its details and see the driver's profile and reviews.",
+    "joinStep2": "Sign in or create a free account (it takes less than 2 minutes).",
+    "joinStep3": "Tap Join trip to reserve your seat — the driver is notified instantly.",
+    "joinStep4": "Use Send message or the driver's WhatsApp to agree on the pickup point and time.",
+    "postTitle": "Post your own trip",
+    "postStep1": "Sign in, then tap + Post trip at the top or on the home page.",
+    "postStep2": "Choose origin, destination, date, time, available seats and an optional price.",
+    "postStep3": "Publish it. Other travellers can now find and join your trip.",
+    "tipsTitle": "Tips for a good trip",
+    "tip1": "Complete your profile and add a photo — it builds trust with other travellers.",
+    "tip2": "Agree on the meeting point and how to pay before the trip starts.",
+    "tip3": "Leave a review after the ride to help the rest of the community.",
+    "ctaText": "Ready to go?",
+    "ctaSearch": "Find a ride",
+    "ctaPost": "Post a trip",
+    "backHome": "Back to home"
   },
   "NotFound": {
     "title": "Page not found",
