@@ -73,13 +73,13 @@ export default async function LocaleLayout({
               <div className="flex items-center justify-center flex-wrap gap-3">
                 <Link
                   href="/guide"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-900 bg-cream-50 hover:bg-white rounded-full px-4 py-2 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-700 rounded-full px-4 py-2 transition-colors"
                 >
                   📖 {t("userGuide")}
                 </Link>
                 <a
                   href="mailto:contact@rideshare-nz.com"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-100 border border-brand-100/40 hover:bg-brand-800 rounded-full px-4 py-2 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-700 rounded-full px-4 py-2 transition-colors"
                 >
                   ✉️ {t("contact")}
                 </a>
